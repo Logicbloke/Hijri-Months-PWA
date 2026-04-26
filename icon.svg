@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#3b2a7e"/>
+      <stop offset="60%" stop-color="#1d1054"/>
+      <stop offset="100%" stop-color="#0c0633"/>
+    </radialGradient>
+    <linearGradient id="moon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff5d4"/>
+      <stop offset="100%" stop-color="#f4c542"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- twinkling stars -->
+  <g fill="#ffe8a3" opacity="0.85">
+    <circle cx="90" cy="110" r="4"/>
+    <circle cx="420" cy="90" r="3"/>
+    <circle cx="380" cy="200" r="5"/>
+    <circle cx="100" cy="380" r="3"/>
+    <circle cx="450" cy="380" r="4"/>
+    <circle cx="60" cy="260" r="3"/>
+    <circle cx="200" cy="80" r="3"/>
+  </g>
+  <!-- big crescent -->
+  <g filter="url(#glow)">
+    <path d="M 320 140
+             a 130 130 0 1 0 0 232
+             a 100 100 0 1 1 0 -232 z"
+          fill="url(#moon)"/>
+  </g>
+  <!-- accent star -->
+  <g transform="translate(180,180)" filter="url(#glow)">
+    <path d="M 0 -30 L 8 -8 L 30 0 L 8 8 L 0 30 L -8 8 L -30 0 L -8 -8 Z" fill="#ffd96b"/>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+{
+  "name": "أشهرنا الهجرية",
+  "short_name": "الأشهر الهجرية",
+  "description": "تطبيق تعليمي للأطفال للتعرف على أشهر السنة الهجرية من خلال الألعاب والألغاز",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#150b3d",
+  "theme_color": "#150b3d",
+  "categories": ["education", "kids"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

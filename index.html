@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>أشهرنا الهجرية</title>
+<meta name="description" content="تطبيق تعليمي للأطفال للتعرف على أشهر السنة الهجرية من خلال الألعاب والألغاز">
+<meta name="theme-color" content="#150b3d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="الأشهر الهجرية">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;600;700;900&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --night-1: #2a1a6e;
+  --night-2: #150b3d;
+  --night-3: #0a0524;
+  --cream: #fef3d0;
+  --cream-warm: #fce4a8;
+  --parchment: #faecc4;
+  --gold: #f4c542;
+  --gold-bright: #ffd96b;
+  --gold-deep: #c98a1d;
+  --rose: #f06292;
+  --mint: #6dd58c;
+  --coral: #ff7a7a;
+  --ink: #2d1b4e;
+  --ink-soft: #574080;
+  --sky: #67b8dc;
+  --violet: #b39ce6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Cairo', system-ui, sans-serif;
+  background: radial-gradient(ellipse at top, var(--night-1) 0%, var(--night-2) 45%, var(--night-3) 100%);
+  color: var(--cream);
+  min-height: 100vh;
+  min-height: 100svh;
+  position: relative;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─── Twinkling star field ─────────────────────────── */
+.starfield {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.starfield .star {
+  position: absolute;
+  background: radial-gradient(circle, #fff8d8 0%, rgba(255,232,163,0.4) 40%, transparent 70%);
+  border-radius: 50%;
+  animation: twinkle linear infinite;
+  filter: blur(0.3px);
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50%      { opacity: 1;    transform: scale(1.2); }
+}
+.starfield::before {
+  content: '';
+  position: absolute;
+  top: -10%; right: -20%;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle at 30% 30%, rgba(244,197,66,0.18) 0%, transparent 60%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* ─── App container ────────────────────────────────── */
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.screen {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  padding: 1rem 1.25rem 1.5rem;
+  animation: fadeUp 0.45s ease both;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+.screen.active { display: flex; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Top bar ──────────────────────────────────────── */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  gap: 0.5rem;
+}
+.icon-btn {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,217,107,0.35);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  color: var(--cream);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s, background 0.2s;
+}
+.icon-btn:active { transform: scale(0.92); }
+.icon-btn:hover { background: rgba(255,255,255,0.12); }
+
+.star-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255,217,107,0.95), rgba(244,197,66,0.95));
+  color: var(--ink);
+  font-family: 'Lalezar', 'Cairo', sans-serif;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 0 var(--gold-deep), 0 8px 18px rgba(0,0,0,0.4);
+  border: 2px solid rgba(255,255,255,0.6);
+}
+.star-pill .star-icon { font-size: 1.4rem; line-height: 1; transform: translateY(-1px); }
+.star-pill.bump { animation: starBump 0.5s cubic-bezier(.4,1.6,.4,1); }
+@keyframes starBump {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25) rotate(-6deg); }
+  100% { transform: scale(1); }
+}
+
+/* ─── Home screen ──────────────────────────────────── */
+#home { padding-top: 1.25rem; }
+
+.home-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem 0 2rem;
+}
+.crescent-mark {
+  width: 150px;
+  height: 150px;
+  margin: 0.5rem 0 1.25rem;
+  filter: drop-shadow(0 6px 22px rgba(255,217,107,0.45));
+  animation: gentleBob 4.5s ease-in-out infinite;
+}
+@keyframes gentleBob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+.home-title {
+  font-family: 'Lalezar', 'Cairo', sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 8vw, 3.4rem);
+  line-height: 1.1;
+  background: linear-gradient(180deg, #fff8d8 0%, var(--gold-bright) 60%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.15);
+  letter-spacing: 0.01em;
+  margin-bottom: 0.4rem;
+}
+.home-subtitle {
+  font-family: 'Reem Kufi', 'Cairo', sans-serif;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--violet);
+  opacity: 0.9;
+  letter-spacing: 0.02em;
+}
+.home-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 2.2rem;
+}
+
+.big-btn {
+  border: none;
+  cursor: pointer;
+  padding: 1.15rem 1.5rem;
+  border-radius: 22px;
+  font-family: 'Lalezar', 'Cairo', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  text-align: right;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+.big-btn:active {
+  transform: translateY(3px);
+}
+.big-btn .emoji {
+  font-size: 1.9rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+.big-btn .arrow {
+  margin-inline-start: auto;
+  font-size: 1.6rem;
+  opacity: 0.8;
+}
+.big-btn.primary {
+  background: linear-gradient(135deg, #ffe089 0%, var(--gold) 50%, #e2a525 100%);
+  color: var(--ink);
+  box-shadow: 0 6px 0 var(--gold-deep), 0 12px 24px rgba(0,0,0,0.35);
+}
+.big-btn.primary:active { box-shadow: 0 3px 0 var(--gold-deep), 0 6px 14px rgba(0,0,0,0.35); }
+.big-btn.secondary {
+  background: linear-gradient(135deg, #b094c8 0%, #7d5fa6 50%, #4a3479 100%);
+  color: var(--cream);
+  box-shadow: 0 6px 0 #2c1c4a, 0 12px 24px rgba(0,0,0,0.35);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+.big-btn.secondary:active { box-shadow: 0 3px 0 #2c1c4a, 0 6px 14px rgba(0,0,0,0.35); }
+.big-btn.tertiary {
+  background: linear-gradient(135deg, #d4a87e 0%, #9c7548 50%, #5e4220 100%);
+  color: var(--cream);
+  box-shadow: 0 6px 0 #3a2810, 0 12px 24px rgba(0,0,0,0.35);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+.big-btn.tertiary:active { box-shadow: 0 3px 0 #3a2810, 0 6px 14px rgba(0,0,0,0.35); }
+
+.home-foot {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--violet);
+  opacity: 0.6;
+  padding-top: 1.5rem;
+}
+
+/* ─── Game card / parchment ────────────────────────── */
+.parchment {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--parchment) 100%);
+  color: var(--ink);
+  border-radius: 28px;
+  padding: 1.4rem 1.25rem;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.6),
+    inset 0 -6px 0 rgba(201,138,29,0.18),
+    0 14px 30px rgba(0,0,0,0.45);
+  position: relative;
+}
+.parchment::before, .parchment::after {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  background: var(--gold);
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  top: -7px;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12);
+}
+.parchment::before { right: 18px; }
+.parchment::after  { left: 18px; }
+
+.month-tag {
+  display: inline-block;
+  font-family: 'Reem Kufi', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: var(--ink);
+  color: var(--gold-bright);
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+}
+
+/* ─── LETTER GAME ──────────────────────────────────── */
+.letter-prompt {
+  text-align: center;
+  font-family: 'Reem Kufi', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.4rem;
+}
+.letter-fact {
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink);
+  opacity: 0.85;
+  margin-bottom: 1.1rem;
+}
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 80px;
+  padding: 0.85rem;
+  background: rgba(45,27,78,0.06);
+  border-radius: 18px;
+  border: 2px dashed rgba(45,27,78,0.18);
+  margin-bottom: 1.25rem;
+}
+.slot {
+  width: 54px; height: 64px;
+  background: rgba(255,255,255,0.55);
+  border: 2px solid rgba(45,27,78,0.18);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.slot.gap {
+  width: 18px;
+  background: transparent;
+  border: none;
+  pointer-events: none;
+}
+.slot.filled {
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  border-color: var(--gold-deep);
+  box-shadow: 0 3px 0 var(--gold-deep);
+  animation: pop 0.25s ease;
+}
+@keyframes pop { from { transform: scale(0.6); } to { transform: scale(1); } }
+
+.bench {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+  min-height: 70px;
+}
+.tile {
+  width: 56px; height: 64px;
+  background: linear-gradient(180deg, #fff 0%, #ffe9b8 100%);
+  border: 2px solid rgba(201,138,29,0.4);
+  border-radius: 14px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 0 rgba(201,138,29,0.45), 0 6px 14px rgba(0,0,0,0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  animation: tileIn 0.35s ease both;
+}
+.tile:hover { transform: translateY(-2px); }
+.tile:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(201,138,29,0.45), 0 3px 8px rgba(0,0,0,0.18); }
+.tile.used { visibility: hidden; }
+@keyframes tileIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.8); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.feedback {
+  min-height: 2.5rem;
+  text-align: center;
+  font-family: 'Lalezar', sans-serif;
+  font-size: 1.4rem;
+  margin: 0.4rem 0 0.6rem;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.feedback.correct { color: #1f7a3d; animation: pop 0.4s ease; }
+.feedback.wrong   { color: #b53030; animation: shake 0.45s; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.actions button {
+  flex: 1;
+  border: none;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  font-family: 'Lalezar', 'Cairo', sans-serif;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.actions button:active { transform: translateY(2px); }
+.btn-light {
+  background: rgba(45,27,78,0.1);
+  color: var(--ink);
+  border: 2px solid rgba(45,27,78,0.18) !important;
+}
+.btn-go {
+  background: linear-gradient(135deg, #ffe089, var(--gold) 60%, var(--gold-deep));
+  color: var(--ink);
+  box-shadow: 0 4px 0 var(--gold-deep);
+}
+
+/* ─── TRIVIA GAME ──────────────────────────────────── */
+.trivia-q {
+  font-family: 'Reem Kufi', 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink);
+  padding: 0.5rem 0.25rem 0.25rem;
+}
+.trivia-prompt {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.2rem;
+}
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+.choice {
+  border: none;
+  cursor: pointer;
+  padding: 1.1rem 1.2rem;
+  border-radius: 20px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--cream);
+  text-align: center;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 5px 0 var(--cs), 0 10px 20px rgba(0,0,0,0.32);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 0 1px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255,243,208,0.18);
+}
+.choice:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--cs), 0 5px 12px rgba(0,0,0,0.32); }
+.choice.right { animation: pulseGreen 0.8s ease; }
+.choice.wrong { animation: shake 0.5s; opacity: 0.55; }
+.choice.dim { opacity: 0.45; transform: scale(0.97); }
+@keyframes pulseGreen {
+  0%   { box-shadow: 0 5px 0 var(--cs), 0 10px 20px rgba(0,0,0,0.32); }
+  50%  { box-shadow: 0 0 0 8px rgba(109,213,140,0.55), 0 5px 0 var(--cs); }
+  100% { box-shadow: 0 5px 0 var(--cs), 0 10px 20px rgba(0,0,0,0.32); }
+}
+
+/* ─── ORDER GAME ───────────────────────────────────── */
+.sequence {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.55rem;
+  margin: 1.1rem 0 0.2rem;
+}
+.seq-card {
+  flex: 1;
+  min-width: 0;
+  min-height: 96px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.6rem 0.4rem;
+  position: relative;
+  line-height: 1.25;
+}
+.seq-card.fixed {
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  color: var(--cream);
+  box-shadow: 0 4px 0 var(--cs), 0 8px 16px rgba(0,0,0,0.28);
+  border: 2px solid rgba(255,243,208,0.18);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55);
+}
+.seq-card.slot {
+  background: rgba(45,27,78,0.07);
+  border: 2px dashed rgba(45,27,78,0.3);
+  color: rgba(45,27,78,0.45);
+  font-family: 'Lalezar', sans-serif;
+  font-size: 2rem;
+  transition: all 0.2s;
+}
+.seq-card.slot.target {
+  background: rgba(244,197,66,0.22);
+  border-color: var(--gold-deep);
+  border-style: solid;
+  color: var(--gold-deep);
+  transform: scale(1.05);
+}
+.seq-card.slot.filled {
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  color: var(--cream);
+  border: 2px solid rgba(255,243,208,0.18);
+  box-shadow: 0 4px 0 var(--cs), 0 8px 16px rgba(0,0,0,0.28);
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55);
+  animation: pop 0.35s ease;
+}
+.seq-num {
+  position: absolute;
+  top: 5px;
+  right: 9px;
+  font-family: 'Reem Kufi', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0.65;
+}
+.arrow-hint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  opacity: 0.7;
+  margin-top: 0.2rem;
+}
+.order-bench {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: center;
+  margin: 1.1rem 0 0.5rem;
+  min-height: 60px;
+}
+.draggable {
+  width: 90%;
+  max-width: 280px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  color: var(--cream);
+  border: 2px solid rgba(255,243,208,0.18);
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  box-shadow: 0 4px 0 var(--cs), 0 8px 16px rgba(0,0,0,0.28);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55);
+  animation: tileIn 0.4s ease both;
+}
+.draggable::before {
+  content: '⋮⋮';
+  display: inline-block;
+  margin-inline-end: 0.5rem;
+  letter-spacing: -2px;
+  opacity: 0.55;
+  font-weight: 900;
+  transform: translateY(-1px);
+}
+.draggable:active { cursor: grabbing; }
+.draggable.dragging {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow: 0 8px 0 var(--cs), 0 18px 30px rgba(0,0,0,0.45);
+  animation: none;
+}
+.draggable.placed { visibility: hidden; }
+.draggable.bouncing { animation: shake 0.45s; }
+
+/* ─── Confetti / particles canvas ──────────────────── */
+#fx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ─── Toast / Win banner ───────────────────────────── */
+.win-banner {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(10,5,36,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 90;
+  padding: 1.5rem;
+  animation: fadeUp 0.4s ease;
+}
+.win-banner.active { display: grid; }
+.win-card {
+  background: linear-gradient(180deg, var(--cream), var(--parchment));
+  color: var(--ink);
+  border-radius: 28px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  max-width: 360px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+.win-card h2 {
+  font-family: 'Lalezar', sans-serif;
+  font-size: 2rem;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+.win-card .month-show {
+  font-family: 'Cairo', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--gold-deep);
+  margin: 0.4rem 0 0.7rem;
+}
+.win-card .fact-show {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 1.4rem;
+}
+.win-card button {
+  width: 100%;
+  border: none;
+  padding: 0.95rem;
+  border-radius: 18px;
+  font-family: 'Lalezar', 'Cairo', sans-serif;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #ffe089, var(--gold), var(--gold-deep));
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--gold-deep);
+}
+.win-card button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-deep); }
+
+/* ─── Decorative divider ───────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--ink-soft);
+  margin: 0.4rem 0 0.7rem;
+  font-size: 1rem;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(45,27,78,0.25), transparent);
+}
+
+/* ─── Reduced motion ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Tiny screens ─────────────────────────────────── */
+@media (max-width: 360px) {
+  .tile, .slot { width: 46px; height: 56px; font-size: 1.7rem; }
+  .home-title { font-size: 2rem; }
+  .big-btn { font-size: 1.4rem; padding: 1rem 1.2rem; }
+  .trivia-q { font-size: 1.25rem; }
+  .choice { font-size: 1.35rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="starfield" id="starfield"></div>
+
+<canvas id="fx"></canvas>
+
+<div id="app">
+
+  <!-- ═══════════════ HOME ═══════════════ -->
+  <section class="screen active" id="home">
+    <div class="topbar">
+      <div></div>
+      <div class="star-pill" id="starPill">
+        <span class="star-icon">⭐</span>
+        <span id="starCount">0</span>
+      </div>
+    </div>
+
+    <div class="home-hero">
+      <svg class="crescent-mark" viewBox="0 0 200 200" aria-hidden="true">
+        <defs>
+          <linearGradient id="moonG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fff5d4"/>
+            <stop offset="100%" stop-color="#f4c542"/>
+          </linearGradient>
+          <filter id="g1" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4"/>
+          </filter>
+        </defs>
+        <circle cx="100" cy="100" r="78" fill="rgba(255,217,107,0.18)" filter="url(#g1)"/>
+        <path d="M 130 50
+                 a 55 55 0 1 0 0 100
+                 a 42 42 0 1 1 0 -100 z"
+              fill="url(#moonG)"/>
+        <g fill="#ffd96b">
+          <circle cx="55" cy="60" r="3"/>
+          <circle cx="40" cy="125" r="2.5"/>
+          <circle cx="160" cy="155" r="3"/>
+        </g>
+      </svg>
+      <h1 class="home-title">أَشْهُرُنَا الْهِجْرِيَّة</h1>
+      <p class="home-subtitle">العَب وتعلَّم أسماء الأشهر ✨</p>
+
+      <div class="home-cta">
+        <button class="big-btn primary" data-go="letters">
+          <span class="emoji">🔤</span>
+          <span>رَكِّبِ الشَّهْر</span>
+          <span class="arrow">←</span>
+        </button>
+        <button class="big-btn secondary" data-go="trivia">
+          <span class="emoji">🌙</span>
+          <span>خَمِّنِ الشَّهْر</span>
+          <span class="arrow">←</span>
+        </button>
+        <button class="big-btn tertiary" data-go="order">
+          <span class="emoji">🌒</span>
+          <span>رَتِّبِ الأَشْهُر</span>
+          <span class="arrow">←</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="home-foot">
+      اثنا عشر شهرًا في السنة الهجرية 🌙
+    </div>
+  </section>
+
+  <!-- ═══════════════ LETTER GAME ═══════════════ -->
+  <section class="screen" id="letters">
+    <div class="topbar">
+      <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
+      <div class="star-pill">
+        <span class="star-icon">⭐</span>
+        <span class="star-count-mirror">0</span>
+      </div>
+    </div>
+
+    <div class="parchment">
+      <div style="text-align:center"><span class="month-tag" id="letterTag">الشهر ١</span></div>
+      <p class="letter-prompt">رَتِّبِ الحُروف لِتُكَوِّنَ اسْمَ الشَّهْر</p>
+      <p class="letter-fact" id="letterFact">…</p>
+
+      <div class="slots" id="slots"></div>
+      <div class="bench" id="bench"></div>
+
+      <div class="feedback" id="letterFb"></div>
+
+      <div class="actions">
+        <button class="btn-light" id="letterReset">↺ إعادة</button>
+        <button class="btn-go" id="letterNext">شَهْرٌ آخر ←</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ TRIVIA GAME ═══════════════ -->
+  <section class="screen" id="trivia">
+    <div class="topbar">
+      <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
+      <div class="star-pill">
+        <span class="star-icon">⭐</span>
+        <span class="star-count-mirror">0</span>
+      </div>
+    </div>
+
+    <div class="parchment">
+      <div style="text-align:center"><span class="month-tag">سؤال</span></div>
+      <p class="trivia-q" id="triviaQ">…</p>
+      <p class="trivia-prompt">اخترِ الشَّهْرَ الصَّحيح</p>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="triviaFb"></div>
+      <div class="actions">
+        <button class="btn-go" id="triviaNext" style="width:100%">سُؤالٌ آخر ←</button>
+      </div>
+    </div>
+  </section>
+  <!-- ═══════════════ ORDER GAME ═══════════════ -->
+  <section class="screen" id="order">
+    <div class="topbar">
+      <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
+      <div class="star-pill">
+        <span class="star-icon">⭐</span>
+        <span class="star-count-mirror">0</span>
+      </div>
+    </div>
+
+    <div class="parchment">
+      <div style="text-align:center"><span class="month-tag">تَرْتيب</span></div>
+      <p class="letter-prompt">أَيُّ شَهْرٍ بَيْنَهُما؟</p>
+      <p class="letter-fact">اِسْحَبِ الشَّهْرَ المُناسِبَ إلى المُرَبَّعِ الفارِغ</p>
+
+      <div class="sequence">
+        <div class="seq-card fixed" id="seqFirst"></div>
+        <div class="seq-card slot" id="seqSlot">؟</div>
+        <div class="seq-card fixed" id="seqLast"></div>
+      </div>
+
+      <div class="order-bench" id="orderBench"></div>
+
+      <div class="feedback" id="orderFb"></div>
+
+      <div class="actions">
+        <button class="btn-go" id="orderNext" style="width:100%">جَوْلَةٌ أُخْرى ←</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════════ WIN BANNER ═══════════════ -->
+<div class="win-banner" id="winBanner">
+  <div class="win-card">
+    <h2 id="winTitle">أحْسَنْت! 🎉</h2>
+    <div class="month-show" id="winMonth"></div>
+    <p class="fact-show" id="winFact"></p>
+    <button id="winNext">تَابِع ←</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════════════════ */
+const MONTHS = [
+  { n: 1,  name: "مُحَرَّم",          plain: "محرم",        fact: "أوَّلُ شهرٍ في السنة الهجرية، وهو من الأشهر الحُرُم.", c1:"#c98968", c2:"#8a5232", cs:"#54311b" }, // terracotta
+  { n: 2,  name: "صَفَر",            plain: "صفر",         fact: "الشهر الثاني من السنة الهجرية.",                       c1:"#b8867f", c2:"#8a5959", cs:"#523131" }, // dusty rose
+  { n: 3,  name: "رَبيعُ الأَوَّل",      plain: "ربيع الأول",   fact: "الشهر الذي وُلِدَ فيه النبيُّ محمد ﷺ.",                  c1:"#9aaa86", c2:"#5e6c50", cs:"#384230" }, // sage
+  { n: 4,  name: "رَبيعُ الآخِر",      plain: "ربيع الآخر",   fact: "الشهر الرَّابع من السنة الهجرية.",                       c1:"#87a3a8", c2:"#506b70", cs:"#2c4045" }, // dusty teal
+  { n: 5,  name: "جُمَادَى الأُولَى",   plain: "جمادى الأولى", fact: "الشهر الخامس من السنة الهجرية.",                       c1:"#a89aae", c2:"#6b5d78", cs:"#3e324a" }, // mauve
+  { n: 6,  name: "جُمَادَى الآخِرَة",  plain: "جمادى الآخرة", fact: "الشهر السادس من السنة الهجرية.",                        c1:"#c4a878", c2:"#8a6f44", cs:"#54422a" }, // warm sand
+  { n: 7,  name: "رَجَب",            plain: "رجب",          fact: "من الأشهر الحُرُم، وهو الشهر السَّابع.",                  c1:"#8a99b3", c2:"#54627a", cs:"#2f394d" }, // slate blue
+  { n: 8,  name: "شَعْبَان",          plain: "شعبان",        fact: "الشهر الذي يَسبِق رمضان المبارك.",                      c1:"#a8a07a", c2:"#706a45", cs:"#3f3a22" }, // olive khaki
+  { n: 9,  name: "رَمَضَان",          plain: "رمضان",        fact: "شهرُ الصيام والقرآن، وفيه ليلةُ القدر.",                c1:"#7a9678", c2:"#4a624a", cs:"#283a28" }, // forest moss
+  { n: 10, name: "شَوَّال",           plain: "شوال",         fact: "أوَّلُ يومٍ منه هو عيدُ الفِطر المبارك.",                 c1:"#a48298", c2:"#6e5266", cs:"#3d2638" }, // plum
+  { n: 11, name: "ذُو القِعْدَة",       plain: "ذو القعدة",    fact: "من الأشهر الحُرُم، يأتي قبل ذي الحِجَّة.",                c1:"#84a896", c2:"#4f7064", cs:"#2c4338" }, // jade
+  { n: 12, name: "ذُو الحِجَّة",        plain: "ذو الحجة",     fact: "فيه فريضةُ الحَجِّ وعيدُ الأَضحى.",                      c1:"#c4a25c", c2:"#8a6f30", cs:"#54441a" }  // honey ochre
+];
+
+// At least one question per month, plus extras
+const QUESTIONS = [
+  { q: "ما أوَّلُ شهرٍ في السنة الهجرية؟",                                   a: 1  },
+  { q: "ما الشهر الثاني في السنة الهجرية؟",                                  a: 2  },
+  { q: "في أيِّ شهرٍ وُلِدَ النبيُّ محمد ﷺ؟",                                a: 3  },
+  { q: "ما الشهر الذي يأتي بعد ربيعٍ الأوَّل؟",                               a: 4  },
+  { q: "ما الشهر الذي يأتي بعد ربيعٍ الآخِر؟",                               a: 5  },
+  { q: "ما الشهر السادس في السنة الهجرية؟",                                 a: 6  },
+  { q: "أيُّ شهرٍ من الأشهر الحُرُم ويأتي قبل شَعبان؟",                       a: 7  },
+  { q: "ما الشهر الذي يأتي قبل رمضان؟",                                     a: 8  },
+  { q: "ما شهرُ الصيام عند المسلمين؟",                                      a: 9  },
+  { q: "في أيِّ شهرٍ يكون عيدُ الفِطر؟",                                     a: 10 },
+  { q: "ما الشهر الذي يأتي بين شوَّال وذي الحِجَّة؟",                         a: 11 },
+  { q: "في أيِّ شهرٍ تكون فريضةُ الحَجِّ وعيدُ الأَضحى؟",                     a: 12 },
+  // extras
+  { q: "في أيِّ شهرٍ ليلةُ القَدر؟",                                          a: 9  },
+  { q: "أوَّلُ الأشهر الحُرُم في السنة هو؟",                                  a: 1  },
+  { q: "أيُّ شهرٍ يبدأ بحرف الذَّال وفيه عيدُ الأَضحى؟",                     a: 12 },
+  { q: "الشهرُ الذي يلي محرَّم مباشرةً هو؟",                                 a: 2  }
+];
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════ */
+const state = {
+  stars: parseInt(localStorage.getItem('hijri.stars') || '0', 10),
+  letterIdx: 0,         // index into letters playlist
+  letterPlaylist: [],   // shuffled array of month numbers
+  letter: { month: null, picks: [], pool: [] },
+  triviaIdx: 0,
+  triviaPlaylist: [],
+  trivia: { question: null, options: [] },
+  orderIdx: 0,
+  orderPlaylist: [],
+  order: { startIdx: null, correct: null }
+};
+
+/* ═══════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════ */
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const monthByN = n => MONTHS.find(m => m.n === n);
+
+const shuffle = arr => {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
+function setStars(v) {
+  state.stars = Math.max(0, v);
+  localStorage.setItem('hijri.stars', String(state.stars));
+  $('#starCount').textContent = state.stars;
+  $$('.star-count-mirror').forEach(el => el.textContent = state.stars);
+}
+function bumpStars(by = 1) {
+  setStars(state.stars + by);
+  $('#starPill').classList.remove('bump');
+  void $('#starPill').offsetWidth;
+  $('#starPill').classList.add('bump');
+}
+
+function go(name) {
+  $$('.screen').forEach(s => s.classList.toggle('active', s.id === name));
+  if (name === 'letters') startLetter();
+  if (name === 'trivia') startTrivia();
+  if (name === 'order') startOrder();
+}
+
+/* ═══════════════════════════════════════════════════════
+   STAR FIELD GENERATION
+   ═══════════════════════════════════════════════════════ */
+(function makeStars() {
+  const sf = $('#starfield');
+  const N = 60;
+  for (let i = 0; i < N; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.5 + 1;
+    s.style.width  = sz + 'px';
+    s.style.height = sz + 'px';
+    s.style.top    = (Math.random() * 100) + '%';
+    s.style.left   = (Math.random() * 100) + '%';
+    s.style.animationDuration = (2 + Math.random() * 4) + 's';
+    s.style.animationDelay    = (Math.random() * 5) + 's';
+    sf.appendChild(s);
+  }
+})();
+
+/* ═══════════════════════════════════════════════════════
+   AUDIO (gentle, optional)
+   ═══════════════════════════════════════════════════════ */
+let audioCtx = null;
+function tone(freq, duration = 0.18, type = 'sine', gain = 0.08) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.value = gain;
+    o.connect(g); g.connect(audioCtx.destination);
+    const t = audioCtx.currentTime;
+    g.gain.setValueAtTime(gain, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+    o.start(t); o.stop(t + duration);
+  } catch (e) {}
+}
+const sfxTap   = () => tone(620, 0.08, 'triangle', 0.05);
+const sfxRight = () => { tone(660, 0.12); setTimeout(()=>tone(880, 0.18), 110); setTimeout(()=>tone(1175, 0.22), 230); };
+const sfxWrong = () => { tone(220, 0.16, 'square', 0.04); };
+
+/* ═══════════════════════════════════════════════════════
+   CONFETTI
+   ═══════════════════════════════════════════════════════ */
+const fx = $('#fx');
+const fctx = fx.getContext('2d');
+let particles = [];
+function resizeFx() { fx.width = innerWidth; fx.height = innerHeight; }
+addEventListener('resize', resizeFx);
+resizeFx();
+
+function burst(cx = innerWidth/2, cy = innerHeight/2 - 50, count = 60) {
+  const colors = ['#ffd96b','#f4c542','#f06292','#6dd58c','#67b8dc','#fff5d4','#c084fc'];
+  for (let i = 0; i < count; i++) {
+    const ang = Math.random() * Math.PI * 2;
+    const sp  = 3 + Math.random() * 6;
+    particles.push({
+      x: cx, y: cy,
+      vx: Math.cos(ang) * sp,
+      vy: Math.sin(ang) * sp - 3,
+      g: 0.18,
+      life: 90 + Math.random()*30,
+      r: 4 + Math.random()*4,
+      color: colors[(Math.random()*colors.length)|0],
+      rot: Math.random()*Math.PI,
+      vr: (Math.random()-0.5)*0.3
+    });
+  }
+}
+function tickFx() {
+  fctx.clearRect(0,0,fx.width,fx.height);
+  particles = particles.filter(p => p.life > 0);
+  for (const p of particles) {
+    p.vy += p.g;
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.rot += p.vr;
+    p.life--;
+    fctx.save();
+    fctx.translate(p.x, p.y);
+    fctx.rotate(p.rot);
+    fctx.fillStyle = p.color;
+    fctx.globalAlpha = Math.min(1, p.life/40);
+    fctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.6);
+    fctx.restore();
+  }
+  requestAnimationFrame(tickFx);
+}
+tickFx();
+
+/* ═══════════════════════════════════════════════════════
+   LETTER GAME
+   ═══════════════════════════════════════════════════════ */
+function startLetter() {
+  if (!state.letterPlaylist.length || state.letterIdx >= state.letterPlaylist.length) {
+    state.letterPlaylist = shuffle(MONTHS.map(m => m.n));
+    state.letterIdx = 0;
+  }
+  loadLetter();
+}
+
+function loadLetter() {
+  const monthN = state.letterPlaylist[state.letterIdx];
+  const month = monthByN(monthN);
+  state.letter.month = month;
+  state.letter.picks = [];
+
+  $('#letterTag').textContent = `الشهر ${arabicNum(month.n)}`;
+  $('#letterFact').textContent = month.fact;
+  $('#letterFb').textContent = '';
+  $('#letterFb').className = 'feedback';
+
+  // Build slots: one per non-space char, plus visual gaps for spaces
+  const slots = $('#slots'); slots.innerHTML = '';
+  const plain = month.plain;
+  for (let i = 0; i < plain.length; i++) {
+    const ch = plain[i];
+    const slot = document.createElement('div');
+    if (ch === ' ') {
+      slot.className = 'slot gap';
+    } else {
+      slot.className = 'slot';
+      slot.dataset.want = ch;
+      slot.dataset.idx  = i;
+      slot.addEventListener('click', () => returnLetter(slot));
+    }
+    slots.appendChild(slot);
+  }
+
+  // Build pool of letters from non-space chars, shuffled
+  const letters = plain.replace(/\s/g, '').split('');
+  const pool = shuffle(letters.map((ch, i) => ({ id: i, ch })));
+  state.letter.pool = pool;
+
+  const bench = $('#bench'); bench.innerHTML = '';
+  pool.forEach((p, i) => {
+    const t = document.createElement('button');
+    t.className = 'tile';
+    t.textContent = p.ch;
+    t.dataset.id = p.id;
+    t.style.animationDelay = (i * 50) + 'ms';
+    t.addEventListener('click', () => placeLetter(t, p));
+    bench.appendChild(t);
+  });
+}
+
+function placeLetter(tileEl, pool) {
+  if (tileEl.classList.contains('used')) return;
+  const slots = $$('#slots .slot:not(.gap)');
+  const next = slots.find(s => !s.classList.contains('filled'));
+  if (!next) return;
+  next.textContent = pool.ch;
+  next.classList.add('filled');
+  next.dataset.tileId = pool.id;
+  tileEl.classList.add('used');
+  sfxTap();
+
+  // Check if all filled
+  const allFilled = slots.every(s => s.classList.contains('filled'));
+  if (allFilled) checkLetter();
+}
+
+function returnLetter(slotEl) {
+  if (!slotEl.classList.contains('filled')) return;
+  const id = slotEl.dataset.tileId;
+  const tile = $(`#bench .tile[data-id="${id}"]`);
+  if (tile) tile.classList.remove('used');
+  slotEl.textContent = '';
+  slotEl.classList.remove('filled');
+  delete slotEl.dataset.tileId;
+  $('#letterFb').textContent = '';
+  $('#letterFb').className = 'feedback';
+}
+
+function checkLetter() {
+  const slots = $$('#slots .slot:not(.gap)');
+  const ok = slots.every(s => s.textContent === s.dataset.want);
+  if (ok) {
+    $('#letterFb').textContent = 'أَحْسَنْت! ✨';
+    $('#letterFb').className = 'feedback correct';
+    bumpStars(1);
+    sfxRight();
+    burst(innerWidth/2, innerHeight/2 - 40, 70);
+    setTimeout(() => showWin(state.letter.month, 'أَحْسَنْت! 🎉'), 700);
+  } else {
+    $('#letterFb').textContent = 'حاولْ مرَّةً أُخرى';
+    $('#letterFb').className = 'feedback wrong';
+    sfxWrong();
+    // After a beat, return any wrong letters to the bench
+    setTimeout(() => {
+      slots.forEach(s => {
+        if (s.textContent !== s.dataset.want) returnLetter(s);
+      });
+    }, 600);
+  }
+}
+
+function letterReset() {
+  loadLetter();
+}
+function letterNext() {
+  state.letterIdx++;
+  if (state.letterIdx >= state.letterPlaylist.length) {
+    state.letterPlaylist = shuffle(MONTHS.map(m => m.n));
+    state.letterIdx = 0;
+  }
+  loadLetter();
+}
+
+/* ═══════════════════════════════════════════════════════
+   TRIVIA GAME
+   ═══════════════════════════════════════════════════════ */
+function startTrivia() {
+  if (!state.triviaPlaylist.length || state.triviaIdx >= state.triviaPlaylist.length) {
+    state.triviaPlaylist = shuffle(QUESTIONS.map((_, i) => i));
+    state.triviaIdx = 0;
+  }
+  loadTrivia();
+}
+
+function loadTrivia() {
+  const qi = state.triviaPlaylist[state.triviaIdx];
+  const q  = QUESTIONS[qi];
+  state.trivia.question = q;
+
+  $('#triviaQ').textContent = q.q;
+  $('#triviaFb').textContent = '';
+  $('#triviaFb').className = 'feedback';
+
+  // Pick 2 distractors that aren't the answer
+  const others = MONTHS.filter(m => m.n !== q.a);
+  const distractors = shuffle(others).slice(0, 2);
+  const opts = shuffle([monthByN(q.a), ...distractors]);
+  state.trivia.options = opts;
+
+  const choicesEl = $('#choices');
+  choicesEl.innerHTML = '';
+  opts.forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'choice';
+    b.style.setProperty('--c1', m.c1);
+    b.style.setProperty('--c2', m.c2);
+    b.style.setProperty('--cs', m.cs);
+    b.textContent = m.name;
+    b.addEventListener('click', () => answerTrivia(b, m));
+    choicesEl.appendChild(b);
+  });
+}
+
+function answerTrivia(btn, picked) {
+  const q = state.trivia.question;
+  const all = $$('#choices .choice');
+  all.forEach(b => b.disabled = true);
+
+  if (picked.n === q.a) {
+    btn.classList.add('right');
+    all.forEach(b => { if (b !== btn) b.classList.add('dim'); });
+    $('#triviaFb').textContent = 'إِجَابَةٌ صَحِيحَة! ⭐';
+    $('#triviaFb').className = 'feedback correct';
+    bumpStars(1);
+    sfxRight();
+    burst(innerWidth/2, innerHeight/2 - 60, 65);
+    setTimeout(() => showWin(monthByN(q.a), 'أَحْسَنْت! 🎉'), 700);
+  } else {
+    btn.classList.add('wrong');
+    sfxWrong();
+    $('#triviaFb').textContent = 'الإجابةُ الصَّحيحة: ' + monthByN(q.a).name;
+    $('#triviaFb').className = 'feedback wrong';
+    // highlight the right answer
+    all.forEach(b => {
+      const m = state.trivia.options.find(x => x.name === b.textContent);
+      if (m && m.n === q.a) b.classList.add('right');
+      else if (b !== btn) b.classList.add('dim');
+    });
+  }
+}
+
+function triviaNext() {
+  state.triviaIdx++;
+  if (state.triviaIdx >= state.triviaPlaylist.length) {
+    state.triviaPlaylist = shuffle(QUESTIONS.map((_, i) => i));
+    state.triviaIdx = 0;
+  }
+  loadTrivia();
+}
+
+/* ═══════════════════════════════════════════════════════
+   ORDER GAME — drag a month into the slot between two others
+   ═══════════════════════════════════════════════════════ */
+function startOrder() {
+  if (!state.orderPlaylist.length || state.orderIdx >= state.orderPlaylist.length) {
+    // 12 starting indices: each gives a triple [i, i+1, i+2] mod 12
+    state.orderPlaylist = shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
+    state.orderIdx = 0;
+  }
+  loadOrder();
+}
+
+function paintSeqCard(el, month) {
+  el.style.setProperty('--c1', month.c1);
+  el.style.setProperty('--c2', month.c2);
+  el.style.setProperty('--cs', month.cs);
+  el.innerHTML = `<span class="seq-num">${arabicNum(month.n)}</span><div>${month.name}</div>`;
+}
+
+function loadOrder() {
+  const i = state.orderPlaylist[state.orderIdx];
+  const first  = MONTHS[i % 12];
+  const middle = MONTHS[(i + 1) % 12];
+  const last   = MONTHS[(i + 2) % 12];
+
+  state.order.startIdx = i;
+  state.order.correct = middle;
+
+  paintSeqCard($('#seqFirst'), first);
+  paintSeqCard($('#seqLast'), last);
+
+  const slot = $('#seqSlot');
+  slot.classList.remove('filled', 'target');
+  slot.removeAttribute('style');
+  slot.innerHTML = '؟';
+
+  // Build candidates: middle + 2 distractors not in this triple
+  const tripleNs = new Set([first.n, middle.n, last.n]);
+  const others = MONTHS.filter(m => !tripleNs.has(m.n));
+  const distractors = shuffle(others).slice(0, 2);
+  const candidates = shuffle([middle, ...distractors]);
+
+  const bench = $('#orderBench');
+  bench.innerHTML = '';
+  candidates.forEach((m, idx) => {
+    const t = document.createElement('div');
+    t.className = 'draggable';
+    t.style.setProperty('--c1', m.c1);
+    t.style.setProperty('--c2', m.c2);
+    t.style.setProperty('--cs', m.cs);
+    t.innerHTML = `<div>${m.name}</div>`;
+    t.style.animationDelay = (idx * 70) + 'ms';
+    attachDrag(t, m);
+    bench.appendChild(t);
+  });
+
+  $('#orderFb').textContent = '';
+  $('#orderFb').className = 'feedback';
+}
+
+function attachDrag(tile, month) {
+  tile.addEventListener('pointerdown', (e) => {
+    if (tile.classList.contains('placed')) return;
+    e.preventDefault();
+    sfxTap();
+
+    const rect = tile.getBoundingClientRect();
+    const offX = e.clientX - rect.left;
+    const offY = e.clientY - rect.top;
+
+    // Hide original (preserves bench layout) and create a clone that follows the pointer
+    tile.style.visibility = 'hidden';
+    const clone = tile.cloneNode(true);
+    clone.style.visibility = 'visible';
+    clone.classList.add('dragging');
+    clone.style.left = rect.left + 'px';
+    clone.style.top  = rect.top  + 'px';
+    clone.style.width  = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+    clone.style.margin = '0';
+    document.body.appendChild(clone);
+
+    const slot = $('#seqSlot');
+
+    function isOverSlot(x, y) {
+      const sr = slot.getBoundingClientRect();
+      return x >= sr.left && x <= sr.right && y >= sr.top && y <= sr.bottom;
+    }
+
+    function move(ev) {
+      clone.style.left = (ev.clientX - offX) + 'px';
+      clone.style.top  = (ev.clientY - offY) + 'px';
+      const over = isOverSlot(ev.clientX, ev.clientY);
+      slot.classList.toggle('target', over && !slot.classList.contains('filled'));
+    }
+
+    function end(ev) {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', end);
+      window.removeEventListener('pointercancel', end);
+      slot.classList.remove('target');
+
+      const dropped = isOverSlot(ev.clientX, ev.clientY) && !slot.classList.contains('filled');
+
+      if (dropped) {
+        clone.remove();
+        attemptPlacement(tile, month, rect);
+      } else {
+        // Bounce clone back to its starting position, then restore original
+        clone.style.transition = 'left 0.28s ease, top 0.28s ease, transform 0.28s ease';
+        clone.style.left = rect.left + 'px';
+        clone.style.top  = rect.top  + 'px';
+        clone.style.transform = 'scale(1) rotate(0)';
+        setTimeout(() => {
+          clone.remove();
+          tile.style.visibility = '';
+        }, 300);
+      }
+    }
+
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', end);
+    window.addEventListener('pointercancel', end);
+  });
+}
+
+function attemptPlacement(tile, month, originRect) {
+  const slot = $('#seqSlot');
+  if (month.n === state.order.correct.n) {
+    // Correct — fill the slot
+    paintSeqCard(slot, month);
+    slot.classList.add('filled');
+    tile.classList.add('placed');
+
+    $('#orderFb').textContent = 'أَحْسَنْت! ✨';
+    $('#orderFb').className = 'feedback correct';
+    bumpStars(1);
+    sfxRight();
+    burst(innerWidth/2, innerHeight/2 - 40, 70);
+    setTimeout(() => showWin(month, 'أَحْسَنْت! 🎉'), 700);
+  } else {
+    // Wrong — restore tile and shake it
+    tile.style.visibility = '';
+    tile.classList.add('bouncing');
+    setTimeout(() => tile.classList.remove('bouncing'), 500);
+    $('#orderFb').textContent = 'حاولْ مَرَّةً أُخرى';
+    $('#orderFb').className = 'feedback wrong';
+    sfxWrong();
+  }
+}
+
+function orderNext() {
+  state.orderIdx++;
+  if (state.orderIdx >= state.orderPlaylist.length) {
+    state.orderPlaylist = shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
+    state.orderIdx = 0;
+  }
+  loadOrder();
+}
+
+/* ═══════════════════════════════════════════════════════
+   WIN BANNER
+   ═══════════════════════════════════════════════════════ */
+function showWin(month, title) {
+  $('#winTitle').textContent = title;
+  $('#winMonth').textContent = month.name;
+  $('#winFact').textContent = month.fact;
+  $('#winBanner').classList.add('active');
+}
+function hideWin() { $('#winBanner').classList.remove('active'); }
+
+/* ═══════════════════════════════════════════════════════
+   ARABIC NUMERALS
+   ═══════════════════════════════════════════════════════ */
+function arabicNum(n) {
+  const map = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).split('').map(d => map[+d] ?? d).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   WIRING
+   ═══════════════════════════════════════════════════════ */
+$$('[data-go]').forEach(b => b.addEventListener('click', () => {
+  sfxTap();
+  go(b.dataset.go);
+}));
+$('#letterReset').addEventListener('click', letterReset);
+$('#letterNext').addEventListener('click', () => { hideWin(); letterNext(); });
+$('#triviaNext').addEventListener('click', () => { hideWin(); triviaNext(); });
+$('#orderNext').addEventListener('click', () => { hideWin(); orderNext(); });
+$('#winNext').addEventListener('click', () => {
+  hideWin();
+  if      ($('#letters').classList.contains('active')) letterNext();
+  else if ($('#trivia' ).classList.contains('active')) triviaNext();
+  else if ($('#order'  ).classList.contains('active')) orderNext();
+});
+
+setStars(state.stars);
+
+/* ═══════════════════════════════════════════════════════
+   PWA: register service worker
+   ═══════════════════════════════════════════════════════ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => {
+      console.warn('SW registration failed:', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
