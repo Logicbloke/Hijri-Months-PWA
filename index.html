@@ -389,6 +389,8 @@ html[dir="rtl"] #home .topbar { justify-content: flex-end; }
   border-radius: 16px;
   border: 2px dashed rgba(45,27,78,0.18);
   margin-bottom: 0.7rem;
+  /* Arabic month names always read right-to-left */
+  direction: rtl;
 }
 .slot {
   width: 46px; height: 54px;
@@ -425,6 +427,8 @@ html[dir="rtl"] #home .topbar { justify-content: flex-end; }
   gap: 0.45rem;
   margin-bottom: 0.5rem;
   min-height: 56px;
+  /* Arabic letters always lay out right-to-left */
+  direction: rtl;
 }
 .tile {
   width: 48px; height: 56px;
