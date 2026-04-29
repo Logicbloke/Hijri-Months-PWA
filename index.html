@@ -42,16 +42,19 @@
 html, body {
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
   font-family: 'Cairo', system-ui, sans-serif;
   background: radial-gradient(ellipse at top, var(--night-1) 0%, var(--night-2) 45%, var(--night-3) 100%);
   color: var(--cream);
-  min-height: 100vh;
-  min-height: 100svh;
-  position: relative;
-  overflow-y: auto;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
   -webkit-overflow-scrolling: touch;
   user-select: none;
   -webkit-user-select: none;
@@ -90,10 +93,12 @@ body {
 #app {
   position: relative;
   z-index: 1;
-  min-height: 100vh;
-  min-height: 100svh;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
@@ -101,11 +106,13 @@ body {
   flex: 1;
   display: none;
   flex-direction: column;
-  padding: 1rem 1.25rem 1.5rem;
+  padding: 0.6rem 1rem 0.75rem;
   animation: fadeUp 0.45s ease both;
   max-width: 720px;
   width: 100%;
   margin: 0 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 .screen.active { display: flex; }
 @keyframes fadeUp {
@@ -118,11 +125,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.6rem;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 .icon-btn {
-  width: 46px; height: 46px;
+  width: 42px; height: 42px;
   border-radius: 50%;
   border: 2px solid rgba(255,217,107,0.35);
   background: rgba(255,255,255,0.06);
@@ -159,7 +167,7 @@ body {
 }
 
 /* ─── Home screen ──────────────────────────────────── */
-#home { padding-top: 1.25rem; }
+#home { padding-top: 0.75rem; }
 
 .home-hero {
   flex: 1;
@@ -168,14 +176,16 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1rem 0 2rem;
+  padding: 0.4rem 0 0.6rem;
+  min-height: 0;
 }
 .crescent-mark {
-  width: 150px;
-  height: 150px;
-  margin: 0.5rem 0 1.25rem;
+  width: clamp(80px, 18vh, 130px);
+  height: clamp(80px, 18vh, 130px);
+  margin: 0 0 0.5rem;
   filter: drop-shadow(0 6px 22px rgba(255,217,107,0.45));
   animation: gentleBob 4.5s ease-in-out infinite;
+  flex-shrink: 0;
 }
 @keyframes gentleBob {
   0%, 100% { transform: translateY(0) rotate(-2deg); }
@@ -185,7 +195,7 @@ body {
 .home-title {
   font-family: 'Lalezar', 'Cairo', sans-serif;
   font-weight: 400;
-  font-size: clamp(2.4rem, 8vw, 3.4rem);
+  font-size: clamp(2rem, 7vw, 3rem);
   line-height: 1.1;
   background: linear-gradient(180deg, #fff8d8 0%, var(--gold-bright) 60%, var(--gold) 100%);
   -webkit-background-clip: text;
@@ -193,12 +203,12 @@ body {
   color: transparent;
   text-shadow: 0 2px 0 rgba(0,0,0,0.15);
   letter-spacing: 0.01em;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 .home-subtitle {
   font-family: 'Reem Kufi', 'Cairo', sans-serif;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--violet);
   opacity: 0.9;
   letter-spacing: 0.02em;
@@ -206,23 +216,23 @@ body {
 .home-cta {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.6rem;
   width: 100%;
   max-width: 420px;
-  margin-top: 2.2rem;
+  margin-top: 1.1rem;
 }
 
 .big-btn {
   border: none;
   cursor: pointer;
-  padding: 1.15rem 1.5rem;
-  border-radius: 22px;
+  padding: 0.85rem 1.25rem;
+  border-radius: 20px;
   font-family: 'Lalezar', 'Cairo', sans-serif;
-  font-size: 1.65rem;
+  font-size: 1.4rem;
   font-weight: 400;
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   width: 100%;
   text-align: right;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -233,12 +243,12 @@ body {
   transform: translateY(3px);
 }
 .big-btn .emoji {
-  font-size: 1.9rem;
+  font-size: 1.65rem;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 .big-btn .arrow {
   margin-inline-start: auto;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   opacity: 0.8;
 }
 .big-btn.primary {
@@ -264,23 +274,28 @@ body {
 
 .home-foot {
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--violet);
   opacity: 0.6;
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
+  flex-shrink: 0;
 }
 
 /* ─── Game card / parchment ────────────────────────── */
 .parchment {
   background: linear-gradient(180deg, var(--cream) 0%, var(--parchment) 100%);
   color: var(--ink);
-  border-radius: 28px;
-  padding: 1.4rem 1.25rem;
+  border-radius: 24px;
+  padding: 0.9rem 0.95rem 1rem;
   box-shadow:
     inset 0 0 0 2px rgba(255,255,255,0.6),
     inset 0 -6px 0 rgba(201,138,29,0.18),
     0 14px 30px rgba(0,0,0,0.45);
   position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .parchment::before, .parchment::after {
   content: '';
@@ -299,12 +314,12 @@ body {
   display: inline-block;
   font-family: 'Reem Kufi', sans-serif;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   background: var(--ink);
   color: var(--gold-bright);
-  padding: 0.3rem 0.85rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 999px;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.45rem;
 }
 
 /* ─── LETTER GAME ──────────────────────────────────── */
@@ -312,46 +327,46 @@ body {
   text-align: center;
   font-family: 'Reem Kufi', 'Cairo', sans-serif;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--ink-soft);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 .letter-fact {
   text-align: center;
-  font-size: 1rem;
-  line-height: 1.55;
+  font-size: 0.92rem;
+  line-height: 1.45;
   color: var(--ink);
   opacity: 0.85;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.7rem;
 }
 .slots {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.45rem;
-  min-height: 80px;
-  padding: 0.85rem;
+  gap: 0.4rem;
+  min-height: 64px;
+  padding: 0.6rem;
   background: rgba(45,27,78,0.06);
-  border-radius: 18px;
+  border-radius: 16px;
   border: 2px dashed rgba(45,27,78,0.18);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.7rem;
 }
 .slot {
-  width: 54px; height: 64px;
+  width: 46px; height: 54px;
   background: rgba(255,255,255,0.55);
   border: 2px solid rgba(45,27,78,0.18);
-  border-radius: 12px;
+  border-radius: 11px;
   display: grid;
   place-items: center;
   font-family: 'Cairo', sans-serif;
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: var(--ink);
   cursor: pointer;
   transition: all 0.18s;
 }
 .slot.gap {
-  width: 18px;
+  width: 14px;
   background: transparent;
   border: none;
   pointer-events: none;
@@ -368,18 +383,18 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-  min-height: 70px;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+  min-height: 56px;
 }
 .tile {
-  width: 56px; height: 64px;
+  width: 48px; height: 56px;
   background: linear-gradient(180deg, #fff 0%, #ffe9b8 100%);
   border: 2px solid rgba(201,138,29,0.4);
-  border-radius: 14px;
+  border-radius: 12px;
   font-family: 'Cairo', sans-serif;
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: var(--ink);
   cursor: pointer;
   display: grid;
@@ -397,11 +412,11 @@ body {
 }
 
 .feedback {
-  min-height: 2.5rem;
+  min-height: 1.8rem;
   text-align: center;
   font-family: 'Lalezar', sans-serif;
-  font-size: 1.4rem;
-  margin: 0.4rem 0 0.6rem;
+  font-size: 1.2rem;
+  margin: 0.2rem 0 0.3rem;
   display: grid;
   place-items: center;
   color: var(--ink);
@@ -417,16 +432,17 @@ body {
 
 .actions {
   display: flex;
-  gap: 0.6rem;
-  margin-top: 1rem;
+  gap: 0.5rem;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 .actions button {
   flex: 1;
   border: none;
-  padding: 0.85rem 1rem;
-  border-radius: 16px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
   font-family: 'Lalezar', 'Cairo', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: transform 0.15s;
 }
@@ -446,31 +462,31 @@ body {
 .trivia-q {
   font-family: 'Reem Kufi', 'Cairo', sans-serif;
   font-weight: 700;
-  font-size: 1.45rem;
-  line-height: 1.5;
+  font-size: 1.25rem;
+  line-height: 1.45;
   text-align: center;
   color: var(--ink);
-  padding: 0.5rem 0.25rem 0.25rem;
+  padding: 0.3rem 0.25rem 0.2rem;
 }
 .trivia-prompt {
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--ink-soft);
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.4rem;
 }
 .choices {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  margin-top: 1rem;
+  gap: 0.55rem;
+  margin-top: 0.4rem;
 }
 .choice {
   border: none;
   cursor: pointer;
-  padding: 1.1rem 1.2rem;
-  border-radius: 20px;
+  padding: 0.8rem 1rem;
+  border-radius: 18px;
   font-family: 'Cairo', sans-serif;
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: var(--cream);
   text-align: center;
@@ -495,23 +511,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 0.55rem;
-  margin: 1.1rem 0 0.2rem;
+  gap: 0.5rem;
+  margin: 0.4rem 0 0.2rem;
 }
 .seq-card {
   flex: 1;
   min-width: 0;
-  min-height: 96px;
-  border-radius: 20px;
+  min-height: 76px;
+  border-radius: 18px;
   display: grid;
   place-items: center;
   text-align: center;
   font-family: 'Cairo', sans-serif;
   font-weight: 700;
-  font-size: 1.05rem;
-  padding: 0.6rem 0.4rem;
+  font-size: 1rem;
+  padding: 0.5rem 0.3rem;
   position: relative;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 .seq-card.fixed {
   background: linear-gradient(135deg, var(--c1), var(--c2));
@@ -541,17 +557,17 @@ body {
   border: 2px solid rgba(255,243,208,0.18);
   box-shadow: 0 4px 0 var(--cs), 0 8px 16px rgba(0,0,0,0.28);
   font-family: 'Cairo', sans-serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   text-shadow: 0 1px 3px rgba(0,0,0,0.55);
   animation: pop 0.35s ease;
 }
 .seq-num {
   position: absolute;
-  top: 5px;
-  right: 9px;
+  top: 4px;
+  right: 7px;
   font-family: 'Reem Kufi', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   opacity: 0.65;
 }
@@ -565,10 +581,10 @@ body {
 .order-bench {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.45rem;
   align-items: center;
-  margin: 1.1rem 0 0.5rem;
-  min-height: 60px;
+  margin: 0.55rem 0 0.3rem;
+  min-height: 50px;
 }
 .draggable {
   width: 90%;
@@ -576,11 +592,11 @@ body {
   background: linear-gradient(135deg, var(--c1), var(--c2));
   color: var(--cream);
   border: 2px solid rgba(255,243,208,0.18);
-  border-radius: 16px;
-  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  padding: 0.6rem 0.9rem;
   font-family: 'Cairo', sans-serif;
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   text-align: center;
   cursor: grab;
   user-select: none;
@@ -635,44 +651,106 @@ body {
 .win-card {
   background: linear-gradient(180deg, var(--cream), var(--parchment));
   color: var(--ink);
-  border-radius: 28px;
-  padding: 2rem 1.5rem;
+  border-radius: 24px;
+  padding: 1.4rem 1.2rem 1.2rem;
   text-align: center;
-  max-width: 360px;
+  max-width: 340px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
   box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 .win-card h2 {
   font-family: 'Lalezar', sans-serif;
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: var(--ink);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
 }
 .win-card .month-show {
   font-family: 'Cairo', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 900;
   color: var(--gold-deep);
-  margin: 0.4rem 0 0.7rem;
+  margin: 0.3rem 0 0.5rem;
 }
 .win-card .fact-show {
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: var(--ink-soft);
-  margin-bottom: 1.4rem;
+  margin-bottom: 1rem;
 }
 .win-card button {
   width: 100%;
   border: none;
-  padding: 0.95rem;
-  border-radius: 18px;
+  padding: 0.8rem;
+  border-radius: 16px;
   font-family: 'Lalezar', 'Cairo', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   background: linear-gradient(135deg, #ffe089, var(--gold), var(--gold-deep));
   color: var(--ink);
   cursor: pointer;
   box-shadow: 0 4px 0 var(--gold-deep);
 }
 .win-card button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-deep); }
+.win-card button.secondary {
+  background: rgba(45,27,78,0.08);
+  color: var(--ink);
+  box-shadow: none;
+  border: 2px solid rgba(45,27,78,0.18);
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+}
+
+/* ─── Progress modal ───────────────────────────────── */
+.star-pill { cursor: pointer; }
+.progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0.4rem 0 1rem;
+  text-align: right;
+}
+.progress-row {
+  background: rgba(45,27,78,0.06);
+  border: 1px solid rgba(45,27,78,0.12);
+  border-radius: 14px;
+  padding: 0.6rem 0.8rem;
+}
+.progress-row .pr-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+.progress-row .pr-count {
+  font-family: 'Lalezar', sans-serif;
+  color: var(--gold-deep);
+  font-size: 1.05rem;
+}
+.progress-row .pr-bar {
+  height: 8px;
+  background: rgba(45,27,78,0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-row .pr-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-bright), var(--gold-deep));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.progress-row.done .pr-fill { background: linear-gradient(90deg, #6dd58c, #2f8a4a); }
+.progress-row.done .pr-count { color: #2f8a4a; }
+.progress-row .pr-remaining {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+  font-family: 'Reem Kufi', sans-serif;
+}
 
 /* ─── Decorative divider ───────────────────────────── */
 .divider {
@@ -702,11 +780,40 @@ body {
 
 /* ─── Tiny screens ─────────────────────────────────── */
 @media (max-width: 360px) {
-  .tile, .slot { width: 46px; height: 56px; font-size: 1.7rem; }
-  .home-title { font-size: 2rem; }
-  .big-btn { font-size: 1.4rem; padding: 1rem 1.2rem; }
-  .trivia-q { font-size: 1.25rem; }
-  .choice { font-size: 1.35rem; }
+  .tile, .slot { width: 40px; height: 48px; font-size: 1.45rem; }
+  .home-title { font-size: 1.85rem; }
+  .big-btn { font-size: 1.2rem; padding: 0.7rem 1rem; }
+  .big-btn .emoji { font-size: 1.4rem; }
+  .trivia-q { font-size: 1.1rem; }
+  .choice { font-size: 1.15rem; padding: 0.65rem 0.9rem; }
+  .crescent-mark { width: 90px; height: 90px; }
+  .seq-card { font-size: 0.88rem; min-height: 66px; }
+}
+
+/* ─── Short screens (landscape phones, small phones) ── */
+@media (max-height: 700px) {
+  .crescent-mark { width: clamp(70px, 14vh, 110px); height: clamp(70px, 14vh, 110px); }
+  .home-cta { gap: 0.5rem; margin-top: 0.7rem; }
+  .big-btn { padding: 0.7rem 1.1rem; font-size: 1.25rem; }
+  .home-foot { padding-top: 0.3rem; font-size: 0.75rem; }
+  .parchment { padding: 0.7rem 0.8rem 0.8rem; }
+  .letter-fact { margin-bottom: 0.45rem; font-size: 0.85rem; }
+  .slots { min-height: 56px; padding: 0.4rem; margin-bottom: 0.45rem; }
+  .slot, .tile { width: 42px; height: 50px; font-size: 1.55rem; }
+  .bench { min-height: 50px; }
+  .trivia-q { font-size: 1.1rem; padding-top: 0.2rem; }
+  .choices { gap: 0.4rem; }
+  .choice { padding: 0.65rem 0.9rem; font-size: 1.2rem; }
+  .seq-card { min-height: 64px; font-size: 0.92rem; }
+  .draggable { padding: 0.5rem 0.8rem; font-size: 0.98rem; }
+}
+@media (max-height: 620px) {
+  .crescent-mark { width: 70px; height: 70px; }
+  .home-subtitle { font-size: 0.9rem; }
+  .home-cta { margin-top: 0.5rem; gap: 0.4rem; }
+  .big-btn { padding: 0.55rem 0.95rem; font-size: 1.1rem; border-radius: 16px; }
+  .big-btn .emoji { font-size: 1.25rem; }
+  .home-foot { display: none; }
 }
 </style>
 </head>
@@ -722,7 +829,7 @@ body {
   <section class="screen active" id="home">
     <div class="topbar">
       <div></div>
-      <div class="star-pill" id="starPill">
+      <div class="star-pill" id="starPill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span id="starCount">0</span>
       </div>
@@ -781,7 +888,7 @@ body {
   <section class="screen" id="letters">
     <div class="topbar">
       <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
-      <div class="star-pill">
+      <div class="star-pill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span class="star-count-mirror">0</span>
       </div>
@@ -808,7 +915,7 @@ body {
   <section class="screen" id="trivia">
     <div class="topbar">
       <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
-      <div class="star-pill">
+      <div class="star-pill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span class="star-count-mirror">0</span>
       </div>
@@ -829,7 +936,7 @@ body {
   <section class="screen" id="order">
     <div class="topbar">
       <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
-      <div class="star-pill">
+      <div class="star-pill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span class="star-count-mirror">0</span>
       </div>
@@ -865,6 +972,17 @@ body {
     <div class="month-show" id="winMonth"></div>
     <p class="fact-show" id="winFact"></p>
     <button id="winNext">تَابِع ←</button>
+    <button id="winSecondary" class="secondary" style="display:none">الصَّفْحَةُ الرَّئيسيَّة 🏠</button>
+  </div>
+</div>
+
+<!-- ═══════════════ PROGRESS MODAL ═══════════════ -->
+<div class="win-banner" id="progressModal">
+  <div class="win-card">
+    <h2>تَقَدُّمُك 🌟</h2>
+    <p class="fact-show" id="progressIntro">إِليكَ ما تَعَلَّمْتَهُ حتَّى الآن</p>
+    <div class="progress-list" id="progressList"></div>
+    <button id="progressClose">إِغْلاق</button>
   </div>
 </div>
 
@@ -911,18 +1029,56 @@ const QUESTIONS = [
 /* ═══════════════════════════════════════════════════════
    STATE
    ═══════════════════════════════════════════════════════ */
+const TOTALS = { letter: 12, trivia: QUESTIONS.length, order: 12 };
+const GAME_LABELS = {
+  letter: 'رَكِّبِ الشَّهْر',
+  trivia: 'خَمِّنِ الشَّهْر',
+  order:  'رَتِّبِ الأَشْهُر'
+};
+const REMAINING_UNIT = {
+  letter: ['شَهْر', 'شَهْرَيْن', 'أَشْهُر'],
+  trivia: ['سُؤال', 'سُؤالان', 'أَسْئِلَة'],
+  order:  ['تَرْتيبَة', 'تَرْتيبَتان', 'تَرْتيبات']
+};
+
+function loadDoneSet(key) {
+  try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
+  catch (e) { return new Set(); }
+}
+
 const state = {
   stars: parseInt(localStorage.getItem('hijri.stars') || '0', 10),
-  letterIdx: 0,         // index into letters playlist
-  letterPlaylist: [],   // shuffled array of month numbers
   letter: { month: null, picks: [], pool: [] },
-  triviaIdx: 0,
-  triviaPlaylist: [],
   trivia: { question: null, options: [] },
-  orderIdx: 0,
-  orderPlaylist: [],
-  order: { startIdx: null, correct: null }
+  order: { startIdx: null, correct: null },
+  done: {
+    letter: loadDoneSet('hijri.done.letter'),
+    trivia: loadDoneSet('hijri.done.trivia'),
+    order:  loadDoneSet('hijri.done.order')
+  },
+  pendingCompletion: null  // when set, win banner is in "all done" mode for this game
 };
+
+function persistDone(game) {
+  localStorage.setItem(`hijri.done.${game}`, JSON.stringify([...state.done[game]]));
+}
+function markDone(game, key) {
+  state.done[game].add(key);
+  persistDone(game);
+}
+function isComplete(game) {
+  return state.done[game].size >= TOTALS[game];
+}
+function resetGameProgress(game) {
+  state.done[game].clear();
+  persistDone(game);
+}
+function pickRemainingKey(game, allKeys) {
+  const set = state.done[game];
+  const remaining = allKeys.filter(k => !set.has(k));
+  if (remaining.length === 0) return null;
+  return remaining[Math.floor(Math.random() * remaining.length)];
+}
 
 /* ═══════════════════════════════════════════════════════
    UTILITIES
@@ -1055,16 +1211,17 @@ tickFx();
    LETTER GAME
    ═══════════════════════════════════════════════════════ */
 function startLetter() {
-  if (!state.letterPlaylist.length || state.letterIdx >= state.letterPlaylist.length) {
-    state.letterPlaylist = shuffle(MONTHS.map(m => m.n));
-    state.letterIdx = 0;
-  }
+  if (isComplete('letter')) { showAllDone('letter'); return; }
   loadLetter();
 }
 
-function loadLetter() {
-  const monthN = state.letterPlaylist[state.letterIdx];
-  const month = monthByN(monthN);
+function loadLetter(forceMonth) {
+  let month = forceMonth;
+  if (!month) {
+    const monthN = pickRemainingKey('letter', MONTHS.map(m => m.n));
+    if (monthN === null) { showAllDone('letter'); return; }
+    month = monthByN(monthN);
+  }
   state.letter.month = month;
   state.letter.picks = [];
 
@@ -1139,12 +1296,19 @@ function checkLetter() {
   const slots = $$('#slots .slot:not(.gap)');
   const ok = slots.every(s => s.textContent === s.dataset.want);
   if (ok) {
-    $('#letterFb').textContent = 'أَحْسَنْت! ✨';
+    const wasNew = !state.done.letter.has(state.letter.month.n);
+    if (wasNew) {
+      markDone('letter', state.letter.month.n);
+      bumpStars(1);
+    }
+    $('#letterFb').textContent = wasNew ? 'أَحْسَنْت! ✨' : 'رائِع! 🌙';
     $('#letterFb').className = 'feedback correct';
-    bumpStars(1);
     sfxRight();
     burst(innerWidth/2, innerHeight/2 - 40, 70);
-    setTimeout(() => showWin(state.letter.month, 'أَحْسَنْت! 🎉'), 700);
+    setTimeout(() => {
+      if (isComplete('letter')) showAllDone('letter');
+      else showWin(state.letter.month, 'أَحْسَنْت! 🎉');
+    }, 700);
   } else {
     $('#letterFb').textContent = 'حاولْ مرَّةً أُخرى';
     $('#letterFb').className = 'feedback wrong';
@@ -1159,14 +1323,11 @@ function checkLetter() {
 }
 
 function letterReset() {
-  loadLetter();
+  if (state.letter.month) loadLetter(state.letter.month);
+  else loadLetter();
 }
 function letterNext() {
-  state.letterIdx++;
-  if (state.letterIdx >= state.letterPlaylist.length) {
-    state.letterPlaylist = shuffle(MONTHS.map(m => m.n));
-    state.letterIdx = 0;
-  }
+  if (isComplete('letter')) { showAllDone('letter'); return; }
   loadLetter();
 }
 
@@ -1174,16 +1335,18 @@ function letterNext() {
    TRIVIA GAME
    ═══════════════════════════════════════════════════════ */
 function startTrivia() {
-  if (!state.triviaPlaylist.length || state.triviaIdx >= state.triviaPlaylist.length) {
-    state.triviaPlaylist = shuffle(QUESTIONS.map((_, i) => i));
-    state.triviaIdx = 0;
-  }
+  if (isComplete('trivia')) { showAllDone('trivia'); return; }
   loadTrivia();
 }
 
-function loadTrivia() {
-  const qi = state.triviaPlaylist[state.triviaIdx];
-  const q  = QUESTIONS[qi];
+function loadTrivia(forceQi) {
+  let qi = forceQi;
+  if (qi === undefined) {
+    qi = pickRemainingKey('trivia', QUESTIONS.map((_, i) => i));
+    if (qi === null) { showAllDone('trivia'); return; }
+  }
+  const q = QUESTIONS[qi];
+  state.trivia.questionIdx = qi;
   state.trivia.question = q;
 
   $('#triviaQ').textContent = q.q;
@@ -1218,12 +1381,19 @@ function answerTrivia(btn, picked) {
   if (picked.n === q.a) {
     btn.classList.add('right');
     all.forEach(b => { if (b !== btn) b.classList.add('dim'); });
-    $('#triviaFb').textContent = 'إِجَابَةٌ صَحِيحَة! ⭐';
+    const wasNew = !state.done.trivia.has(state.trivia.questionIdx);
+    if (wasNew) {
+      markDone('trivia', state.trivia.questionIdx);
+      bumpStars(1);
+    }
+    $('#triviaFb').textContent = wasNew ? 'إِجَابَةٌ صَحِيحَة! ⭐' : 'صَحيح! 🌙';
     $('#triviaFb').className = 'feedback correct';
-    bumpStars(1);
     sfxRight();
     burst(innerWidth/2, innerHeight/2 - 60, 65);
-    setTimeout(() => showWin(monthByN(q.a), 'أَحْسَنْت! 🎉'), 700);
+    setTimeout(() => {
+      if (isComplete('trivia')) showAllDone('trivia');
+      else showWin(monthByN(q.a), 'أَحْسَنْت! 🎉');
+    }, 700);
   } else {
     btn.classList.add('wrong');
     sfxWrong();
@@ -1239,11 +1409,7 @@ function answerTrivia(btn, picked) {
 }
 
 function triviaNext() {
-  state.triviaIdx++;
-  if (state.triviaIdx >= state.triviaPlaylist.length) {
-    state.triviaPlaylist = shuffle(QUESTIONS.map((_, i) => i));
-    state.triviaIdx = 0;
-  }
+  if (isComplete('trivia')) { showAllDone('trivia'); return; }
   loadTrivia();
 }
 
@@ -1251,11 +1417,7 @@ function triviaNext() {
    ORDER GAME — drag a month into the slot between two others
    ═══════════════════════════════════════════════════════ */
 function startOrder() {
-  if (!state.orderPlaylist.length || state.orderIdx >= state.orderPlaylist.length) {
-    // 12 starting indices: each gives a triple [i, i+1, i+2] mod 12
-    state.orderPlaylist = shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
-    state.orderIdx = 0;
-  }
+  if (isComplete('order')) { showAllDone('order'); return; }
   loadOrder();
 }
 
@@ -1266,8 +1428,12 @@ function paintSeqCard(el, month) {
   el.innerHTML = `<span class="seq-num">${arabicNum(month.n)}</span><div>${month.name}</div>`;
 }
 
-function loadOrder() {
-  const i = state.orderPlaylist[state.orderIdx];
+function loadOrder(forceI) {
+  let i = forceI;
+  if (i === undefined) {
+    i = pickRemainingKey('order', [0,1,2,3,4,5,6,7,8,9,10,11]);
+    if (i === null) { showAllDone('order'); return; }
+  }
   const first  = MONTHS[i % 12];
   const middle = MONTHS[(i + 1) % 12];
   const last   = MONTHS[(i + 2) % 12];
@@ -1381,12 +1547,19 @@ function attemptPlacement(tile, month, originRect) {
     slot.classList.add('filled');
     tile.classList.add('placed');
 
-    $('#orderFb').textContent = 'أَحْسَنْت! ✨';
+    const wasNew = !state.done.order.has(state.order.startIdx);
+    if (wasNew) {
+      markDone('order', state.order.startIdx);
+      bumpStars(1);
+    }
+    $('#orderFb').textContent = wasNew ? 'أَحْسَنْت! ✨' : 'رائِع! 🌙';
     $('#orderFb').className = 'feedback correct';
-    bumpStars(1);
     sfxRight();
     burst(innerWidth/2, innerHeight/2 - 40, 70);
-    setTimeout(() => showWin(month, 'أَحْسَنْت! 🎉'), 700);
+    setTimeout(() => {
+      if (isComplete('order')) showAllDone('order');
+      else showWin(month, 'أَحْسَنْت! 🎉');
+    }, 700);
   } else {
     // Wrong — restore tile and shake it
     tile.style.visibility = '';
@@ -1399,11 +1572,7 @@ function attemptPlacement(tile, month, originRect) {
 }
 
 function orderNext() {
-  state.orderIdx++;
-  if (state.orderIdx >= state.orderPlaylist.length) {
-    state.orderPlaylist = shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
-    state.orderIdx = 0;
-  }
+  if (isComplete('order')) { showAllDone('order'); return; }
   loadOrder();
 }
 
@@ -1411,12 +1580,68 @@ function orderNext() {
    WIN BANNER
    ═══════════════════════════════════════════════════════ */
 function showWin(month, title) {
+  state.pendingCompletion = null;
   $('#winTitle').textContent = title;
   $('#winMonth').textContent = month.name;
   $('#winFact').textContent = month.fact;
+  $('#winNext').textContent = 'تَابِع ←';
+  $('#winSecondary').style.display = 'none';
   $('#winBanner').classList.add('active');
 }
+function showAllDone(game) {
+  state.pendingCompletion = game;
+  $('#winTitle').textContent = 'مَبْروك! 🏆';
+  $('#winMonth').textContent = '🌙✨🌟';
+  const total = TOTALS[game];
+  const label = GAME_LABELS[game];
+  $('#winFact').textContent =
+    `لَقَدْ أَتْمَمْتَ كُلَّ الجَوْلاتِ الـ${arabicNum(total)} في لُعبة "${label}"! هَلْ تُريدُ أَنْ تَلْعَبَ مَرَّةً أُخرى؟`;
+  $('#winNext').textContent = 'العَب مَرَّةً أُخرى ↺';
+  $('#winSecondary').style.display = '';
+  $('#winBanner').classList.add('active');
+  burst(innerWidth/2, innerHeight/2 - 60, 120);
+  setTimeout(() => burst(innerWidth/2, innerHeight/2 - 60, 80), 250);
+}
 function hideWin() { $('#winBanner').classList.remove('active'); }
+
+/* ═══════════════════════════════════════════════════════
+   PROGRESS MODAL
+   ═══════════════════════════════════════════════════════ */
+function remainingPhrase(game, n) {
+  const units = REMAINING_UNIT[game];
+  if (n === 1) return `بَقِيَ ${units[0]} واحِد`;
+  if (n === 2) return `بَقِيَ ${units[1]}`;
+  if (n >= 3 && n <= 10) return `بَقِيَتْ ${arabicNum(n)} ${units[2]}`;
+  return `بَقِيَ ${arabicNum(n)} ${units[0]}`;
+}
+function openProgress() {
+  const list = $('#progressList');
+  list.innerHTML = '';
+  ['letter','trivia','order'].forEach(g => {
+    const total = TOTALS[g];
+    const done  = state.done[g].size;
+    const pct   = Math.round((done / total) * 100);
+    const remaining = total - done;
+    const isDone = done >= total;
+    const row = document.createElement('div');
+    row.className = 'progress-row' + (isDone ? ' done' : '');
+    row.innerHTML = `
+      <div class="pr-top">
+        <span>${GAME_LABELS[g]}</span>
+        <span class="pr-count">${arabicNum(done)} / ${arabicNum(total)}</span>
+      </div>
+      <div class="pr-bar"><div class="pr-fill" style="width:${pct}%"></div></div>
+      <div class="pr-remaining">${isDone ? 'أَتْمَمْتَ هذِهِ اللُّعبَة! 🌟' : remainingPhrase(g, remaining)}</div>
+    `;
+    list.appendChild(row);
+  });
+  const allDone = ['letter','trivia','order'].every(g => isComplete(g));
+  $('#progressIntro').textContent = allDone
+    ? 'مَبْروك! تَعَلَّمْتَ كُلَّ شَيءٍ في كُلِّ الأَلْعاب! 🏆'
+    : 'إِليكَ ما تَعَلَّمْتَهُ حتَّى الآن';
+  $('#progressModal').classList.add('active');
+}
+function closeProgress() { $('#progressModal').classList.remove('active'); }
 
 /* ═══════════════════════════════════════════════════════
    ARABIC NUMERALS
@@ -1433,15 +1658,37 @@ $$('[data-go]').forEach(b => b.addEventListener('click', () => {
   sfxTap();
   go(b.dataset.go);
 }));
+$$('[data-open-progress]').forEach(el => el.addEventListener('click', () => {
+  sfxTap();
+  openProgress();
+}));
+$('#progressClose').addEventListener('click', closeProgress);
+$('#progressModal').addEventListener('click', (e) => {
+  if (e.target === $('#progressModal')) closeProgress();
+});
 $('#letterReset').addEventListener('click', letterReset);
 $('#letterNext').addEventListener('click', () => { hideWin(); letterNext(); });
 $('#triviaNext').addEventListener('click', () => { hideWin(); triviaNext(); });
 $('#orderNext').addEventListener('click', () => { hideWin(); orderNext(); });
 $('#winNext').addEventListener('click', () => {
+  const completed = state.pendingCompletion;
   hideWin();
+  if (completed) {
+    resetGameProgress(completed);
+    state.pendingCompletion = null;
+    if (completed === 'letter') letterNext();
+    else if (completed === 'trivia') triviaNext();
+    else if (completed === 'order') orderNext();
+    return;
+  }
   if      ($('#letters').classList.contains('active')) letterNext();
   else if ($('#trivia' ).classList.contains('active')) triviaNext();
   else if ($('#order'  ).classList.contains('active')) orderNext();
+});
+$('#winSecondary').addEventListener('click', () => {
+  state.pendingCompletion = null;
+  hideWin();
+  go('home');
 });
 
 setStars(state.stars);
