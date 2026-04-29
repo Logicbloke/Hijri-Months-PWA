@@ -1,5 +1,5 @@
 // Service worker for "أشهرنا الهجرية" PWA
-const VERSION = 'v1.0.0';
+const VERSION = 'v1.0.1';
 const SHELL_CACHE = `hijri-shell-${VERSION}`;
 const RUNTIME_CACHE = `hijri-runtime-${VERSION}`;
 
@@ -16,8 +16,12 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(SHELL_CACHE)
       .then((cache) => cache.addAll(SHELL_FILES))
-      .then(() => self.skipWaiting())
   );
+});
+
+// Allow the page to ask a waiting worker to take over immediately
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 // Activate: clean up old caches
