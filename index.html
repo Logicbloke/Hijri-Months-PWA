@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<title>أشهرنا الهجرية</title>
+<title>Hijri Months</title>
 <meta name="description" content="تطبيق تعليمي للأطفال للتعرف على أشهر السنة الهجرية من خلال الألعاب والألغاز">
 <meta name="theme-color" content="#150b3d">
 <link rel="manifest" href="manifest.webmanifest">
@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="icon.svg">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="الأشهر الهجرية">
+<meta name="apple-mobile-web-app-title" content="Hijri Months">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,6 +144,44 @@ body {
 }
 .icon-btn:active { transform: scale(0.92); }
 .icon-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* ─── Language selector ────────────────────────────── */
+.lang-select {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 0.7rem);
+  right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+  z-index: 50;
+  height: 38px;
+  padding: 0 2rem 0 0.85rem;
+  border-radius: 999px;
+  border: 2px solid rgba(255,217,107,0.35);
+  background: rgba(20,11,61,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--cream);
+  font-family: 'Reem Kufi', 'Cairo', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%23fef3d0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 10px 7px;
+  transition: transform 0.15s, background 0.2s;
+}
+.lang-select:hover { background-color: rgba(45,27,78,0.7); }
+.lang-select:active { transform: scale(0.95); }
+.lang-select option {
+  background: var(--night-2);
+  color: var(--cream);
+  font-family: system-ui, sans-serif;
+}
+/* keep the chevron on the same physical side regardless of writing direction */
+html[dir="rtl"] .lang-select { padding: 0 2rem 0 0.85rem; }
+/* Make sure the home topbar leaves room for the language selector on the right */
+#home .topbar { padding-right: 8.5rem; min-height: 42px; }
 
 .star-pill {
   display: inline-flex;
@@ -823,6 +861,16 @@ body {
 
 <canvas id="fx"></canvas>
 
+<select id="langSelect" class="lang-select" aria-label="Language">
+  <option value="ar">العربية</option>
+  <option value="en">English</option>
+  <option value="sv">Svenska</option>
+  <option value="fr">Français</option>
+  <option value="es">Español</option>
+  <option value="it">Italiano</option>
+  <option value="de">Deutsch</option>
+</select>
+
 <div id="app">
 
   <!-- ═══════════════ HOME ═══════════════ -->
@@ -857,29 +905,29 @@ body {
           <circle cx="160" cy="155" r="3"/>
         </g>
       </svg>
-      <h1 class="home-title">أَشْهُرُنَا الْهِجْرِيَّة</h1>
-      <p class="home-subtitle">العَب وتعلَّم أسماء الأشهر ✨</p>
+      <h1 class="home-title" data-i18n="title">أَشْهُرُنَا الْهِجْرِيَّة</h1>
+      <p class="home-subtitle" data-i18n="subtitle">العَب وتعلَّم أسماء الأشهر ✨</p>
 
       <div class="home-cta">
         <button class="big-btn primary" data-go="letters">
           <span class="emoji">🔤</span>
-          <span>رَكِّبِ الشَّهْر</span>
-          <span class="arrow">←</span>
+          <span data-i18n="btnLetters">رَكِّبِ الشَّهْر</span>
+          <span class="arrow" data-i18n="arrow">←</span>
         </button>
         <button class="big-btn secondary" data-go="trivia">
           <span class="emoji">🌙</span>
-          <span>خَمِّنِ الشَّهْر</span>
-          <span class="arrow">←</span>
+          <span data-i18n="btnTrivia">خَمِّنِ الشَّهْر</span>
+          <span class="arrow" data-i18n="arrow">←</span>
         </button>
         <button class="big-btn tertiary" data-go="order">
           <span class="emoji">🌒</span>
-          <span>رَتِّبِ الأَشْهُر</span>
-          <span class="arrow">←</span>
+          <span data-i18n="btnOrder">رَتِّبِ الأَشْهُر</span>
+          <span class="arrow" data-i18n="arrow">←</span>
         </button>
       </div>
     </div>
 
-    <div class="home-foot">
+    <div class="home-foot" data-i18n="foot">
       اثنا عشر شهرًا في السنة الهجرية 🌙
     </div>
   </section>
@@ -887,7 +935,7 @@ body {
   <!-- ═══════════════ LETTER GAME ═══════════════ -->
   <section class="screen" id="letters">
     <div class="topbar">
-      <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
+      <button class="icon-btn" data-go="home" aria-label="رجوع" data-i18n-aria="ariaBack">✕</button>
       <div class="star-pill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span class="star-count-mirror">0</span>
@@ -896,7 +944,7 @@ body {
 
     <div class="parchment">
       <div style="text-align:center"><span class="month-tag" id="letterTag">الشهر ١</span></div>
-      <p class="letter-prompt">رَتِّبِ الحُروف لِتُكَوِّنَ اسْمَ الشَّهْر</p>
+      <p class="letter-prompt" data-i18n="letterPrompt">رَتِّبِ الحُروف لِتُكَوِّنَ اسْمَ الشَّهْر</p>
       <p class="letter-fact" id="letterFact">…</p>
 
       <div class="slots" id="slots"></div>
@@ -905,8 +953,8 @@ body {
       <div class="feedback" id="letterFb"></div>
 
       <div class="actions">
-        <button class="btn-light" id="letterReset">↺ إعادة</button>
-        <button class="btn-go" id="letterNext">شَهْرٌ آخر ←</button>
+        <button class="btn-light" id="letterReset" data-i18n="letterReset">↺ إعادة</button>
+        <button class="btn-go" id="letterNext" data-i18n="letterNextBtn">شَهْرٌ آخر ←</button>
       </div>
     </div>
   </section>
@@ -914,7 +962,7 @@ body {
   <!-- ═══════════════ TRIVIA GAME ═══════════════ -->
   <section class="screen" id="trivia">
     <div class="topbar">
-      <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
+      <button class="icon-btn" data-go="home" aria-label="رجوع" data-i18n-aria="ariaBack">✕</button>
       <div class="star-pill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span class="star-count-mirror">0</span>
@@ -922,20 +970,20 @@ body {
     </div>
 
     <div class="parchment">
-      <div style="text-align:center"><span class="month-tag">سؤال</span></div>
+      <div style="text-align:center"><span class="month-tag" data-i18n="triviaTag">سؤال</span></div>
       <p class="trivia-q" id="triviaQ">…</p>
-      <p class="trivia-prompt">اخترِ الشَّهْرَ الصَّحيح</p>
+      <p class="trivia-prompt" data-i18n="triviaPrompt">اخترِ الشَّهْرَ الصَّحيح</p>
       <div class="choices" id="choices"></div>
       <div class="feedback" id="triviaFb"></div>
       <div class="actions">
-        <button class="btn-go" id="triviaNext" style="width:100%">سُؤالٌ آخر ←</button>
+        <button class="btn-go" id="triviaNext" style="width:100%" data-i18n="triviaNextBtn">سُؤالٌ آخر ←</button>
       </div>
     </div>
   </section>
   <!-- ═══════════════ ORDER GAME ═══════════════ -->
   <section class="screen" id="order">
     <div class="topbar">
-      <button class="icon-btn" data-go="home" aria-label="رجوع">✕</button>
+      <button class="icon-btn" data-go="home" aria-label="رجوع" data-i18n-aria="ariaBack">✕</button>
       <div class="star-pill" data-open-progress>
         <span class="star-icon">⭐</span>
         <span class="star-count-mirror">0</span>
@@ -943,9 +991,9 @@ body {
     </div>
 
     <div class="parchment">
-      <div style="text-align:center"><span class="month-tag">تَرْتيب</span></div>
-      <p class="letter-prompt">أَيُّ شَهْرٍ بَيْنَهُما؟</p>
-      <p class="letter-fact">اِسْحَبِ الشَّهْرَ المُناسِبَ إلى المُرَبَّعِ الفارِغ</p>
+      <div style="text-align:center"><span class="month-tag" data-i18n="orderTag">تَرْتيب</span></div>
+      <p class="letter-prompt" data-i18n="orderPrompt">أَيُّ شَهْرٍ بَيْنَهُما؟</p>
+      <p class="letter-fact" data-i18n="orderHint">اِسْحَبِ الشَّهْرَ المُناسِبَ إلى المُرَبَّعِ الفارِغ</p>
 
       <div class="sequence">
         <div class="seq-card fixed" id="seqFirst"></div>
@@ -958,7 +1006,7 @@ body {
       <div class="feedback" id="orderFb"></div>
 
       <div class="actions">
-        <button class="btn-go" id="orderNext" style="width:100%">جَوْلَةٌ أُخْرى ←</button>
+        <button class="btn-go" id="orderNext" style="width:100%" data-i18n="orderNextBtn">جَوْلَةٌ أُخْرى ←</button>
       </div>
     </div>
   </section>
@@ -972,17 +1020,17 @@ body {
     <div class="month-show" id="winMonth"></div>
     <p class="fact-show" id="winFact"></p>
     <button id="winNext">تَابِع ←</button>
-    <button id="winSecondary" class="secondary" style="display:none">الصَّفْحَةُ الرَّئيسيَّة 🏠</button>
+    <button id="winSecondary" class="secondary" style="display:none" data-i18n="winHome">الصَّفْحَةُ الرَّئيسيَّة 🏠</button>
   </div>
 </div>
 
 <!-- ═══════════════ PROGRESS MODAL ═══════════════ -->
 <div class="win-banner" id="progressModal">
   <div class="win-card">
-    <h2>تَقَدُّمُك 🌟</h2>
-    <p class="fact-show" id="progressIntro">إِليكَ ما تَعَلَّمْتَهُ حتَّى الآن</p>
+    <h2 data-i18n="progTitle">تَقَدُّمُك 🌟</h2>
+    <p class="fact-show" id="progressIntro" data-i18n="progIntro">إِليكَ ما تَعَلَّمْتَهُ حتَّى الآن</p>
     <div class="progress-list" id="progressList"></div>
-    <button id="progressClose">إِغْلاق</button>
+    <button id="progressClose" data-i18n="progClose">إِغْلاق</button>
   </div>
 </div>
 
@@ -991,55 +1039,607 @@ body {
    DATA
    ═══════════════════════════════════════════════════════ */
 const MONTHS = [
-  { n: 1,  name: "مُحَرَّم",          plain: "محرم",        fact: "أوَّلُ شهرٍ في السنة الهجرية، وهو من الأشهر الحُرُم.", c1:"#c98968", c2:"#8a5232", cs:"#54311b" }, // terracotta
-  { n: 2,  name: "صَفَر",            plain: "صفر",         fact: "الشهر الثاني من السنة الهجرية.",                       c1:"#b8867f", c2:"#8a5959", cs:"#523131" }, // dusty rose
-  { n: 3,  name: "رَبيعُ الأَوَّل",      plain: "ربيع الأول",   fact: "الشهر الذي وُلِدَ فيه النبيُّ محمد ﷺ.",                  c1:"#9aaa86", c2:"#5e6c50", cs:"#384230" }, // sage
-  { n: 4,  name: "رَبيعُ الآخِر",      plain: "ربيع الآخر",   fact: "الشهر الرَّابع من السنة الهجرية.",                       c1:"#87a3a8", c2:"#506b70", cs:"#2c4045" }, // dusty teal
-  { n: 5,  name: "جُمَادَى الأُولَى",   plain: "جمادى الأولى", fact: "الشهر الخامس من السنة الهجرية.",                       c1:"#a89aae", c2:"#6b5d78", cs:"#3e324a" }, // mauve
-  { n: 6,  name: "جُمَادَى الآخِرَة",  plain: "جمادى الآخرة", fact: "الشهر السادس من السنة الهجرية.",                        c1:"#c4a878", c2:"#8a6f44", cs:"#54422a" }, // warm sand
-  { n: 7,  name: "رَجَب",            plain: "رجب",          fact: "من الأشهر الحُرُم، وهو الشهر السَّابع.",                  c1:"#8a99b3", c2:"#54627a", cs:"#2f394d" }, // slate blue
-  { n: 8,  name: "شَعْبَان",          plain: "شعبان",        fact: "الشهر الذي يَسبِق رمضان المبارك.",                      c1:"#a8a07a", c2:"#706a45", cs:"#3f3a22" }, // olive khaki
-  { n: 9,  name: "رَمَضَان",          plain: "رمضان",        fact: "شهرُ الصيام والقرآن، وفيه ليلةُ القدر.",                c1:"#7a9678", c2:"#4a624a", cs:"#283a28" }, // forest moss
-  { n: 10, name: "شَوَّال",           plain: "شوال",         fact: "أوَّلُ يومٍ منه هو عيدُ الفِطر المبارك.",                 c1:"#a48298", c2:"#6e5266", cs:"#3d2638" }, // plum
-  { n: 11, name: "ذُو القِعْدَة",       plain: "ذو القعدة",    fact: "من الأشهر الحُرُم، يأتي قبل ذي الحِجَّة.",                c1:"#84a896", c2:"#4f7064", cs:"#2c4338" }, // jade
-  { n: 12, name: "ذُو الحِجَّة",        plain: "ذو الحجة",     fact: "فيه فريضةُ الحَجِّ وعيدُ الأَضحى.",                      c1:"#c4a25c", c2:"#8a6f30", cs:"#54441a" }  // honey ochre
+  { n: 1,  name: "مُحَرَّم",          plain: "محرم",        c1:"#c98968", c2:"#8a5232", cs:"#54311b" }, // terracotta
+  { n: 2,  name: "صَفَر",            plain: "صفر",         c1:"#b8867f", c2:"#8a5959", cs:"#523131" }, // dusty rose
+  { n: 3,  name: "رَبيعُ الأَوَّل",      plain: "ربيع الأول",   c1:"#9aaa86", c2:"#5e6c50", cs:"#384230" }, // sage
+  { n: 4,  name: "رَبيعُ الآخِر",      plain: "ربيع الآخر",   c1:"#87a3a8", c2:"#506b70", cs:"#2c4045" }, // dusty teal
+  { n: 5,  name: "جُمَادَى الأُولَى",   plain: "جمادى الأولى", c1:"#a89aae", c2:"#6b5d78", cs:"#3e324a" }, // mauve
+  { n: 6,  name: "جُمَادَى الآخِرَة",  plain: "جمادى الآخرة", c1:"#c4a878", c2:"#8a6f44", cs:"#54422a" }, // warm sand
+  { n: 7,  name: "رَجَب",            plain: "رجب",          c1:"#8a99b3", c2:"#54627a", cs:"#2f394d" }, // slate blue
+  { n: 8,  name: "شَعْبَان",          plain: "شعبان",        c1:"#a8a07a", c2:"#706a45", cs:"#3f3a22" }, // olive khaki
+  { n: 9,  name: "رَمَضَان",          plain: "رمضان",        c1:"#7a9678", c2:"#4a624a", cs:"#283a28" }, // forest moss
+  { n: 10, name: "شَوَّال",           plain: "شوال",         c1:"#a48298", c2:"#6e5266", cs:"#3d2638" }, // plum
+  { n: 11, name: "ذُو القِعْدَة",       plain: "ذو القعدة",    c1:"#84a896", c2:"#4f7064", cs:"#2c4338" }, // jade
+  { n: 12, name: "ذُو الحِجَّة",        plain: "ذو الحجة",     c1:"#c4a25c", c2:"#8a6f30", cs:"#54441a" }  // honey ochre
 ];
 
-// At least one question per month, plus extras
+// At least one question per month, plus extras (questions translated via I18N.questions[])
 const QUESTIONS = [
-  { q: "ما أوَّلُ شهرٍ في السنة الهجرية؟",                                   a: 1  },
-  { q: "ما الشهر الثاني في السنة الهجرية؟",                                  a: 2  },
-  { q: "في أيِّ شهرٍ وُلِدَ النبيُّ محمد ﷺ؟",                                a: 3  },
-  { q: "ما الشهر الذي يأتي بعد ربيعٍ الأوَّل؟",                               a: 4  },
-  { q: "ما الشهر الذي يأتي بعد ربيعٍ الآخِر؟",                               a: 5  },
-  { q: "ما الشهر السادس في السنة الهجرية؟",                                 a: 6  },
-  { q: "أيُّ شهرٍ من الأشهر الحُرُم ويأتي قبل شَعبان؟",                       a: 7  },
-  { q: "ما الشهر الذي يأتي قبل رمضان؟",                                     a: 8  },
-  { q: "ما شهرُ الصيام عند المسلمين؟",                                      a: 9  },
-  { q: "في أيِّ شهرٍ يكون عيدُ الفِطر؟",                                     a: 10 },
-  { q: "ما الشهر الذي يأتي بين شوَّال وذي الحِجَّة؟",                         a: 11 },
-  { q: "في أيِّ شهرٍ تكون فريضةُ الحَجِّ وعيدُ الأَضحى؟",                     a: 12 },
+  { a: 1  }, { a: 2  }, { a: 3  }, { a: 4  },
+  { a: 5  }, { a: 6  }, { a: 7  }, { a: 8  },
+  { a: 9  }, { a: 10 }, { a: 11 }, { a: 12 },
   // extras
-  { q: "في أيِّ شهرٍ ليلةُ القَدر؟",                                          a: 9  },
-  { q: "أوَّلُ الأشهر الحُرُم في السنة هو؟",                                  a: 1  },
-  { q: "أيُّ شهرٍ يبدأ بحرف الذَّال وفيه عيدُ الأَضحى؟",                     a: 12 },
-  { q: "الشهرُ الذي يلي محرَّم مباشرةً هو؟",                                 a: 2  }
+  { a: 9  }, { a: 1  }, { a: 12 }, { a: 2  }
 ];
+
+/* ═══════════════════════════════════════════════════════
+   I18N — UI strings, facts and questions per language.
+   The Arabic month names themselves are NOT translated:
+   the goal of the game is to learn them in Arabic.
+   ═══════════════════════════════════════════════════════ */
+const I18N = {
+  ar: {
+    title: "أَشْهُرُنَا الْهِجْرِيَّة",
+    subtitle: "العَب وتعلَّم أسماء الأشهر ✨",
+    btnLetters: "رَكِّبِ الشَّهْر",
+    btnTrivia: "خَمِّنِ الشَّهْر",
+    btnOrder: "رَتِّبِ الأَشْهُر",
+    arrow: "←",
+    foot: "اثنا عشر شهرًا في السنة الهجرية 🌙",
+    monthN: "الشهر {0}",
+    letterPrompt: "رَتِّبِ الحُروف لِتُكَوِّنَ اسْمَ الشَّهْر",
+    letterReset: "↺ إعادة",
+    letterNextBtn: "شَهْرٌ آخر ←",
+    triviaTag: "سؤال",
+    triviaPrompt: "اخترِ الشَّهْرَ الصَّحيح",
+    triviaNextBtn: "سُؤالٌ آخر ←",
+    correctAnsPrefix: "الإجابةُ الصَّحيحة: ",
+    orderTag: "تَرْتيب",
+    orderPrompt: "أَيُّ شَهْرٍ بَيْنَهُما؟",
+    orderHint: "اِسْحَبِ الشَّهْرَ المُناسِبَ إلى المُرَبَّعِ الفارِغ",
+    orderNextBtn: "جَوْلَةٌ أُخْرى ←",
+    fbWellDone: "أَحْسَنْت! ✨",
+    fbGreat: "رائِع! 🌙",
+    fbTryAgain: "حاولْ مرَّةً أُخرى",
+    fbCorrect: "إِجَابَةٌ صَحِيحَة! ⭐",
+    fbCorrectShort: "صَحيح! 🌙",
+    winTitle: "أحْسَنْت! 🎉",
+    winContinue: "تَابِع ←",
+    winHome: "الصَّفْحَةُ الرَّئيسيَّة 🏠",
+    winAllTitle: "مَبْروك! 🏆",
+    winAllText: 'لَقَدْ أَتْمَمْتَ كُلَّ الجَوْلاتِ الـ{0} في لُعبة "{1}"! هَلْ تُريدُ أَنْ تَلْعَبَ مَرَّةً أُخرى؟',
+    winAllPlayAgain: "العَب مَرَّةً أُخرى ↺",
+    progTitle: "تَقَدُّمُك 🌟",
+    progIntro: "إِليكَ ما تَعَلَّمْتَهُ حتَّى الآن",
+    progAllDone: "مَبْروك! تَعَلَّمْتَ كُلَّ شَيءٍ في كُلِّ الأَلْعاب! 🏆",
+    progGameDone: "أَتْمَمْتَ هذِهِ اللُّعبَة! 🌟",
+    progClose: "إِغْلاق",
+    ariaBack: "رجوع",
+    facts: [
+      "أوَّلُ شهرٍ في السنة الهجرية، وهو من الأشهر الحُرُم.",
+      "الشهر الثاني من السنة الهجرية.",
+      "الشهر الذي وُلِدَ فيه النبيُّ محمد ﷺ.",
+      "الشهر الرَّابع من السنة الهجرية.",
+      "الشهر الخامس من السنة الهجرية.",
+      "الشهر السادس من السنة الهجرية.",
+      "من الأشهر الحُرُم، وهو الشهر السَّابع.",
+      "الشهر الذي يَسبِق رمضان المبارك.",
+      "شهرُ الصيام والقرآن، وفيه ليلةُ القدر.",
+      "أوَّلُ يومٍ منه هو عيدُ الفِطر المبارك.",
+      "من الأشهر الحُرُم، يأتي قبل ذي الحِجَّة.",
+      "فيه فريضةُ الحَجِّ وعيدُ الأَضحى."
+    ],
+    questions: [
+      "ما أوَّلُ شهرٍ في السنة الهجرية؟",
+      "ما الشهر الثاني في السنة الهجرية؟",
+      "في أيِّ شهرٍ وُلِدَ النبيُّ محمد ﷺ؟",
+      "ما الشهر الذي يأتي بعد ربيعٍ الأوَّل؟",
+      "ما الشهر الذي يأتي بعد ربيعٍ الآخِر؟",
+      "ما الشهر السادس في السنة الهجرية؟",
+      "أيُّ شهرٍ من الأشهر الحُرُم ويأتي قبل شَعبان؟",
+      "ما الشهر الذي يأتي قبل رمضان؟",
+      "ما شهرُ الصيام عند المسلمين؟",
+      "في أيِّ شهرٍ يكون عيدُ الفِطر؟",
+      "ما الشهر الذي يأتي بين شوَّال وذي الحِجَّة؟",
+      "في أيِّ شهرٍ تكون فريضةُ الحَجِّ وعيدُ الأَضحى؟",
+      "في أيِّ شهرٍ ليلةُ القَدر؟",
+      "أوَّلُ الأشهر الحُرُم في السنة هو؟",
+      "أيُّ شهرٍ يبدأ بحرف الذَّال وفيه عيدُ الأَضحى؟",
+      "الشهرُ الذي يلي محرَّم مباشرةً هو؟"
+    ]
+  },
+
+  en: {
+    title: "Our Hijri Months",
+    subtitle: "Play and learn the month names ✨",
+    btnLetters: "Build the Month",
+    btnTrivia: "Guess the Month",
+    btnOrder: "Order the Months",
+    arrow: "→",
+    foot: "Twelve months in the Hijri year 🌙",
+    monthN: "Month {0}",
+    letterPrompt: "Arrange the letters to spell the month",
+    letterReset: "↺ Reset",
+    letterNextBtn: "Next month →",
+    triviaTag: "Question",
+    triviaPrompt: "Choose the correct month",
+    triviaNextBtn: "Next question →",
+    correctAnsPrefix: "Correct answer: ",
+    orderTag: "Order",
+    orderPrompt: "Which month comes between?",
+    orderHint: "Drag the right month into the empty box",
+    orderNextBtn: "Next round →",
+    fbWellDone: "Well done! ✨",
+    fbGreat: "Great! 🌙",
+    fbTryAgain: "Try again",
+    fbCorrect: "Correct! ⭐",
+    fbCorrectShort: "Right! 🌙",
+    winTitle: "Well done! 🎉",
+    winContinue: "Continue →",
+    winHome: "Home 🏠",
+    winAllTitle: "Congratulations! 🏆",
+    winAllText: 'You finished all {0} rounds of "{1}"! Want to play again?',
+    winAllPlayAgain: "Play again ↺",
+    progTitle: "Your Progress 🌟",
+    progIntro: "Here's what you've learned so far",
+    progAllDone: "Amazing! You've mastered every game! 🏆",
+    progGameDone: "You finished this game! 🌟",
+    progClose: "Close",
+    ariaBack: "Back",
+    facts: [
+      "The first month of the Hijri year — one of the sacred months.",
+      "The second month of the Hijri year.",
+      "The month in which the Prophet Muhammad ﷺ was born.",
+      "The fourth month of the Hijri year.",
+      "The fifth month of the Hijri year.",
+      "The sixth month of the Hijri year.",
+      "One of the sacred months — the seventh month.",
+      "The month that comes just before blessed Ramadan.",
+      "The month of fasting and the Qur'an; it contains Laylat al-Qadr.",
+      "Its first day is the blessed Eid al-Fitr.",
+      "One of the sacred months; it comes before Dhu al-Hijjah.",
+      "The month of Hajj and Eid al-Adha."
+    ],
+    questions: [
+      "What is the first month of the Hijri year?",
+      "What is the second month of the Hijri year?",
+      "In which month was the Prophet Muhammad ﷺ born?",
+      "Which month comes after Rabi' al-Awwal?",
+      "Which month comes after Rabi' al-Akhir?",
+      "What is the sixth month of the Hijri year?",
+      "Which sacred month comes just before Sha'ban?",
+      "Which month comes just before Ramadan?",
+      "Which is the month of fasting?",
+      "In which month is Eid al-Fitr?",
+      "Which month comes between Shawwal and Dhu al-Hijjah?",
+      "In which month do Hajj and Eid al-Adha fall?",
+      "In which month is Laylat al-Qadr?",
+      "What is the first sacred month of the Hijri year?",
+      "Which is the last month of the Hijri year, the one with Eid al-Adha?",
+      "Which month comes immediately after Muharram?"
+    ]
+  },
+
+  sv: {
+    title: "Våra Hijri-månader",
+    subtitle: "Lek och lär dig månadernas namn ✨",
+    btnLetters: "Bygg månaden",
+    btnTrivia: "Gissa månaden",
+    btnOrder: "Sortera månaderna",
+    arrow: "→",
+    foot: "Tolv månader i Hijri-året 🌙",
+    monthN: "Månad {0}",
+    letterPrompt: "Lägg bokstäverna i rätt ordning",
+    letterReset: "↺ Börja om",
+    letterNextBtn: "Nästa månad →",
+    triviaTag: "Fråga",
+    triviaPrompt: "Välj rätt månad",
+    triviaNextBtn: "Nästa fråga →",
+    correctAnsPrefix: "Rätt svar: ",
+    orderTag: "Ordning",
+    orderPrompt: "Vilken månad kommer emellan?",
+    orderHint: "Dra rätt månad till den tomma rutan",
+    orderNextBtn: "Nästa runda →",
+    fbWellDone: "Bra jobbat! ✨",
+    fbGreat: "Toppen! 🌙",
+    fbTryAgain: "Försök igen",
+    fbCorrect: "Rätt svar! ⭐",
+    fbCorrectShort: "Rätt! 🌙",
+    winTitle: "Bra jobbat! 🎉",
+    winContinue: "Fortsätt →",
+    winHome: "Hem 🏠",
+    winAllTitle: "Grattis! 🏆",
+    winAllText: 'Du klarade alla {0} rundor i "{1}"! Vill du spela igen?',
+    winAllPlayAgain: "Spela igen ↺",
+    progTitle: "Dina framsteg 🌟",
+    progIntro: "Det här har du lärt dig hittills",
+    progAllDone: "Fantastiskt! Du har klarat alla spel! 🏆",
+    progGameDone: "Du klarade det här spelet! 🌟",
+    progClose: "Stäng",
+    ariaBack: "Tillbaka",
+    facts: [
+      "Den första månaden i Hijri-året — en av de heliga månaderna.",
+      "Den andra månaden i Hijri-året.",
+      "Månaden då profeten Muhammed ﷺ föddes.",
+      "Den fjärde månaden i Hijri-året.",
+      "Den femte månaden i Hijri-året.",
+      "Den sjätte månaden i Hijri-året.",
+      "En av de heliga månaderna — den sjunde månaden.",
+      "Månaden precis före den välsignade Ramadan.",
+      "Fastans och Koranens månad; här finns Laylat al-Qadr.",
+      "Dess första dag är den välsignade Eid al-Fitr.",
+      "En av de heliga månaderna; kommer före Dhu al-Hijjah.",
+      "Månaden för Hajj och Eid al-Adha."
+    ],
+    questions: [
+      "Vilken är den första månaden i Hijri-året?",
+      "Vilken är den andra månaden i Hijri-året?",
+      "I vilken månad föddes profeten Muhammed ﷺ?",
+      "Vilken månad kommer efter Rabi' al-Awwal?",
+      "Vilken månad kommer efter Rabi' al-Akhir?",
+      "Vilken är den sjätte månaden i Hijri-året?",
+      "Vilken helig månad kommer precis före Sha'ban?",
+      "Vilken månad kommer precis före Ramadan?",
+      "Vilken är fastemånaden?",
+      "I vilken månad infaller Eid al-Fitr?",
+      "Vilken månad ligger mellan Shawwal och Dhu al-Hijjah?",
+      "I vilken månad infaller Hajj och Eid al-Adha?",
+      "I vilken månad infaller Laylat al-Qadr?",
+      "Vilken är årets första heliga månad?",
+      "Vilken är Hijri-årets sista månad, den med Eid al-Adha?",
+      "Vilken månad kommer direkt efter Muharram?"
+    ]
+  },
+
+  fr: {
+    title: "Nos mois hégiriens",
+    subtitle: "Joue et apprends les noms des mois ✨",
+    btnLetters: "Construis le mois",
+    btnTrivia: "Devine le mois",
+    btnOrder: "Ordonne les mois",
+    arrow: "→",
+    foot: "Douze mois dans l'année hégirienne 🌙",
+    monthN: "Mois {0}",
+    letterPrompt: "Remets les lettres dans l'ordre",
+    letterReset: "↺ Recommencer",
+    letterNextBtn: "Mois suivant →",
+    triviaTag: "Question",
+    triviaPrompt: "Choisis le bon mois",
+    triviaNextBtn: "Question suivante →",
+    correctAnsPrefix: "Bonne réponse : ",
+    orderTag: "Ordre",
+    orderPrompt: "Quel mois vient entre les deux ?",
+    orderHint: "Glisse le bon mois dans la case vide",
+    orderNextBtn: "Manche suivante →",
+    fbWellDone: "Bravo ! ✨",
+    fbGreat: "Super ! 🌙",
+    fbTryAgain: "Essaie encore",
+    fbCorrect: "Bonne réponse ! ⭐",
+    fbCorrectShort: "Exact ! 🌙",
+    winTitle: "Bravo ! 🎉",
+    winContinue: "Continuer →",
+    winHome: "Accueil 🏠",
+    winAllTitle: "Félicitations ! 🏆",
+    winAllText: 'Tu as terminé les {0} manches du jeu « {1} » ! Veux-tu rejouer ?',
+    winAllPlayAgain: "Rejouer ↺",
+    progTitle: "Ta progression 🌟",
+    progIntro: "Voici ce que tu as appris jusqu'ici",
+    progAllDone: "Bravo ! Tu as terminé tous les jeux ! 🏆",
+    progGameDone: "Tu as fini ce jeu ! 🌟",
+    progClose: "Fermer",
+    ariaBack: "Retour",
+    facts: [
+      "Le premier mois de l'année hégirienne — un des mois sacrés.",
+      "Le deuxième mois de l'année hégirienne.",
+      "Le mois où le prophète Mahomet ﷺ est né.",
+      "Le quatrième mois de l'année hégirienne.",
+      "Le cinquième mois de l'année hégirienne.",
+      "Le sixième mois de l'année hégirienne.",
+      "Un des mois sacrés — le septième mois.",
+      "Le mois qui précède le bienheureux Ramadan.",
+      "Le mois du jeûne et du Coran ; il contient Laylat al-Qadr.",
+      "Son premier jour est l'Aïd al-Fitr.",
+      "Un des mois sacrés ; il précède Dhou al-Hijja.",
+      "Le mois du Hajj et de l'Aïd al-Adha."
+    ],
+    questions: [
+      "Quel est le premier mois de l'année hégirienne ?",
+      "Quel est le deuxième mois de l'année hégirienne ?",
+      "Dans quel mois le prophète Mahomet ﷺ est-il né ?",
+      "Quel mois vient après Rabi' al-Awwal ?",
+      "Quel mois vient après Rabi' al-Akhir ?",
+      "Quel est le sixième mois de l'année hégirienne ?",
+      "Quel mois sacré vient juste avant Cha'ban ?",
+      "Quel mois vient juste avant Ramadan ?",
+      "Quel est le mois du jeûne ?",
+      "Dans quel mois tombe l'Aïd al-Fitr ?",
+      "Quel mois se situe entre Chawwal et Dhou al-Hijja ?",
+      "Dans quel mois ont lieu le Hajj et l'Aïd al-Adha ?",
+      "Dans quel mois se trouve Laylat al-Qadr ?",
+      "Quel est le premier mois sacré de l'année ?",
+      "Quel est le dernier mois de l'année hégirienne, celui de l'Aïd al-Adha ?",
+      "Quel mois vient juste après Mouharram ?"
+    ]
+  },
+
+  es: {
+    title: "Nuestros meses hijríes",
+    subtitle: "Juega y aprende los nombres de los meses ✨",
+    btnLetters: "Forma el mes",
+    btnTrivia: "Adivina el mes",
+    btnOrder: "Ordena los meses",
+    arrow: "→",
+    foot: "Doce meses en el año hijrí 🌙",
+    monthN: "Mes {0}",
+    letterPrompt: "Ordena las letras del mes",
+    letterReset: "↺ Reiniciar",
+    letterNextBtn: "Siguiente mes →",
+    triviaTag: "Pregunta",
+    triviaPrompt: "Elige el mes correcto",
+    triviaNextBtn: "Siguiente pregunta →",
+    correctAnsPrefix: "Respuesta correcta: ",
+    orderTag: "Orden",
+    orderPrompt: "¿Qué mes va entre los dos?",
+    orderHint: "Arrastra el mes correcto a la casilla vacía",
+    orderNextBtn: "Siguiente ronda →",
+    fbWellDone: "¡Bien hecho! ✨",
+    fbGreat: "¡Genial! 🌙",
+    fbTryAgain: "Inténtalo de nuevo",
+    fbCorrect: "¡Correcto! ⭐",
+    fbCorrectShort: "¡Bien! 🌙",
+    winTitle: "¡Bien hecho! 🎉",
+    winContinue: "Continuar →",
+    winHome: "Inicio 🏠",
+    winAllTitle: "¡Felicidades! 🏆",
+    winAllText: '¡Completaste las {0} rondas de "{1}"! ¿Quieres jugar otra vez?',
+    winAllPlayAgain: "Jugar de nuevo ↺",
+    progTitle: "Tu progreso 🌟",
+    progIntro: "Esto es lo que has aprendido hasta ahora",
+    progAllDone: "¡Increíble! Has completado todos los juegos. 🏆",
+    progGameDone: "¡Has terminado este juego! 🌟",
+    progClose: "Cerrar",
+    ariaBack: "Atrás",
+    facts: [
+      "El primer mes del año hijrí — uno de los meses sagrados.",
+      "El segundo mes del año hijrí.",
+      "El mes en el que nació el profeta Mahoma ﷺ.",
+      "El cuarto mes del año hijrí.",
+      "El quinto mes del año hijrí.",
+      "El sexto mes del año hijrí.",
+      "Uno de los meses sagrados — el séptimo mes.",
+      "El mes que precede al bendito Ramadán.",
+      "El mes del ayuno y del Corán; contiene Laylat al-Qadr.",
+      "Su primer día es el Eid al-Fitr.",
+      "Uno de los meses sagrados; viene antes de Dhul-Hiyya.",
+      "El mes del Hajj y del Eid al-Adha."
+    ],
+    questions: [
+      "¿Cuál es el primer mes del año hijrí?",
+      "¿Cuál es el segundo mes del año hijrí?",
+      "¿En qué mes nació el profeta Mahoma ﷺ?",
+      "¿Qué mes viene después de Rabi' al-Awwal?",
+      "¿Qué mes viene después de Rabi' al-Akhir?",
+      "¿Cuál es el sexto mes del año hijrí?",
+      "¿Qué mes sagrado viene justo antes de Sha'bán?",
+      "¿Qué mes viene justo antes de Ramadán?",
+      "¿Cuál es el mes del ayuno?",
+      "¿En qué mes se celebra el Eid al-Fitr?",
+      "¿Qué mes está entre Shawwal y Dhul-Hiyya?",
+      "¿En qué mes son el Hajj y el Eid al-Adha?",
+      "¿En qué mes está Laylat al-Qadr?",
+      "¿Cuál es el primer mes sagrado del año?",
+      "¿Cuál es el último mes del año hijrí, el del Eid al-Adha?",
+      "¿Qué mes viene justo después de Muharram?"
+    ]
+  },
+
+  it: {
+    title: "I nostri mesi dell'Egira",
+    subtitle: "Gioca e impara i nomi dei mesi ✨",
+    btnLetters: "Componi il mese",
+    btnTrivia: "Indovina il mese",
+    btnOrder: "Metti in ordine i mesi",
+    arrow: "→",
+    foot: "Dodici mesi nell'anno dell'Egira 🌙",
+    monthN: "Mese {0}",
+    letterPrompt: "Metti le lettere nell'ordine giusto",
+    letterReset: "↺ Ricomincia",
+    letterNextBtn: "Mese successivo →",
+    triviaTag: "Domanda",
+    triviaPrompt: "Scegli il mese corretto",
+    triviaNextBtn: "Prossima domanda →",
+    correctAnsPrefix: "Risposta corretta: ",
+    orderTag: "Ordine",
+    orderPrompt: "Quale mese sta nel mezzo?",
+    orderHint: "Trascina il mese giusto nella casella vuota",
+    orderNextBtn: "Prossimo turno →",
+    fbWellDone: "Bravo! ✨",
+    fbGreat: "Ottimo! 🌙",
+    fbTryAgain: "Riprova",
+    fbCorrect: "Risposta giusta! ⭐",
+    fbCorrectShort: "Esatto! 🌙",
+    winTitle: "Bravo! 🎉",
+    winContinue: "Continua →",
+    winHome: "Home 🏠",
+    winAllTitle: "Complimenti! 🏆",
+    winAllText: 'Hai completato tutti i {0} turni di "{1}"! Vuoi giocare ancora?',
+    winAllPlayAgain: "Gioca ancora ↺",
+    progTitle: "I tuoi progressi 🌟",
+    progIntro: "Ecco cosa hai imparato finora",
+    progAllDone: "Fantastico! Hai completato tutti i giochi! 🏆",
+    progGameDone: "Hai finito questo gioco! 🌟",
+    progClose: "Chiudi",
+    ariaBack: "Indietro",
+    facts: [
+      "Il primo mese dell'anno dell'Egira — uno dei mesi sacri.",
+      "Il secondo mese dell'anno dell'Egira.",
+      "Il mese in cui nacque il profeta Maometto ﷺ.",
+      "Il quarto mese dell'anno dell'Egira.",
+      "Il quinto mese dell'anno dell'Egira.",
+      "Il sesto mese dell'anno dell'Egira.",
+      "Uno dei mesi sacri — il settimo mese.",
+      "Il mese che precede il benedetto Ramadan.",
+      "Il mese del digiuno e del Corano; contiene Laylat al-Qadr.",
+      "Il suo primo giorno è la festa di Eid al-Fitr.",
+      "Uno dei mesi sacri; viene prima di Dhu al-Hijjah.",
+      "Il mese del Hajj e di Eid al-Adha."
+    ],
+    questions: [
+      "Qual è il primo mese dell'anno dell'Egira?",
+      "Qual è il secondo mese dell'anno dell'Egira?",
+      "In quale mese è nato il profeta Maometto ﷺ?",
+      "Quale mese viene dopo Rabi' al-Awwal?",
+      "Quale mese viene dopo Rabi' al-Akhir?",
+      "Qual è il sesto mese dell'anno dell'Egira?",
+      "Quale mese sacro viene appena prima di Sha'ban?",
+      "Quale mese viene appena prima di Ramadan?",
+      "Qual è il mese del digiuno?",
+      "In quale mese cade Eid al-Fitr?",
+      "Quale mese sta tra Shawwal e Dhu al-Hijjah?",
+      "In quale mese cadono Hajj e Eid al-Adha?",
+      "In quale mese cade Laylat al-Qadr?",
+      "Qual è il primo mese sacro dell'anno?",
+      "Qual è l'ultimo mese dell'anno dell'Egira, quello di Eid al-Adha?",
+      "Quale mese viene subito dopo Muharram?"
+    ]
+  },
+
+  de: {
+    title: "Unsere Hidschra-Monate",
+    subtitle: "Spiele und lerne die Monatsnamen ✨",
+    btnLetters: "Bau den Monat",
+    btnTrivia: "Errate den Monat",
+    btnOrder: "Sortiere die Monate",
+    arrow: "→",
+    foot: "Zwölf Monate im Hidschra-Jahr 🌙",
+    monthN: "Monat {0}",
+    letterPrompt: "Bring die Buchstaben in die richtige Reihenfolge",
+    letterReset: "↺ Neu",
+    letterNextBtn: "Nächster Monat →",
+    triviaTag: "Frage",
+    triviaPrompt: "Wähle den richtigen Monat",
+    triviaNextBtn: "Nächste Frage →",
+    correctAnsPrefix: "Richtige Antwort: ",
+    orderTag: "Reihenfolge",
+    orderPrompt: "Welcher Monat liegt dazwischen?",
+    orderHint: "Zieh den richtigen Monat in das leere Feld",
+    orderNextBtn: "Nächste Runde →",
+    fbWellDone: "Gut gemacht! ✨",
+    fbGreat: "Super! 🌙",
+    fbTryAgain: "Versuch es nochmal",
+    fbCorrect: "Richtig! ⭐",
+    fbCorrectShort: "Stimmt! 🌙",
+    winTitle: "Gut gemacht! 🎉",
+    winContinue: "Weiter →",
+    winHome: "Start 🏠",
+    winAllTitle: "Glückwunsch! 🏆",
+    winAllText: 'Du hast alle {0} Runden in „{1}" geschafft! Nochmal spielen?',
+    winAllPlayAgain: "Nochmal spielen ↺",
+    progTitle: "Dein Fortschritt 🌟",
+    progIntro: "Das hast du bisher gelernt",
+    progAllDone: "Wahnsinn! Du hast alle Spiele geschafft! 🏆",
+    progGameDone: "Du hast dieses Spiel geschafft! 🌟",
+    progClose: "Schließen",
+    ariaBack: "Zurück",
+    facts: [
+      "Der erste Monat im Hidschra-Jahr — einer der heiligen Monate.",
+      "Der zweite Monat im Hidschra-Jahr.",
+      "Der Monat, in dem der Prophet Mohammed ﷺ geboren wurde.",
+      "Der vierte Monat im Hidschra-Jahr.",
+      "Der fünfte Monat im Hidschra-Jahr.",
+      "Der sechste Monat im Hidschra-Jahr.",
+      "Einer der heiligen Monate — der siebte Monat.",
+      "Der Monat direkt vor dem gesegneten Ramadan.",
+      "Der Monat des Fastens und des Korans; in ihm liegt Lailat al-Qadr.",
+      "Sein erster Tag ist das Fest Eid al-Fitr.",
+      "Einer der heiligen Monate; er kommt vor Dhu al-Hidscha.",
+      "Der Monat der Hadsch und des Opferfests Eid al-Adha."
+    ],
+    questions: [
+      "Was ist der erste Monat im Hidschra-Jahr?",
+      "Was ist der zweite Monat im Hidschra-Jahr?",
+      "In welchem Monat wurde der Prophet Mohammed ﷺ geboren?",
+      "Welcher Monat kommt nach Rabi' al-Awwal?",
+      "Welcher Monat kommt nach Rabi' al-Akhir?",
+      "Was ist der sechste Monat im Hidschra-Jahr?",
+      "Welcher heilige Monat kommt direkt vor Sha'ban?",
+      "Welcher Monat kommt direkt vor Ramadan?",
+      "Welches ist der Fastenmonat?",
+      "In welchem Monat ist das Fest Eid al-Fitr?",
+      "Welcher Monat liegt zwischen Schawwal und Dhu al-Hidscha?",
+      "In welchem Monat finden die Hadsch und Eid al-Adha statt?",
+      "In welchem Monat liegt Lailat al-Qadr?",
+      "Welcher ist der erste heilige Monat des Jahres?",
+      "Welcher ist der letzte Monat im Hidschra-Jahr, der mit Eid al-Adha?",
+      "Welcher Monat kommt direkt nach Muharram?"
+    ]
+  }
+};
+
+const SUPPORTED_LANGS = Object.keys(I18N);
+let LANG = 'ar';
+
+function detectLang() {
+  const stored = localStorage.getItem('hijri.lang');
+  if (stored && I18N[stored]) return stored;
+  const langs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages : [navigator.language || ''];
+  for (const l of langs) {
+    const code = String(l).toLowerCase().split('-')[0];
+    if (I18N[code]) return code;
+  }
+  return 'ar';
+}
+
+function t(key, ...args) {
+  const dict = I18N[LANG] || I18N.ar;
+  let s = dict[key] != null ? dict[key] : (I18N.ar[key] != null ? I18N.ar[key] : key);
+  args.forEach((a, i) => { s = s.split(`{${i}}`).join(String(a)); });
+  return s;
+}
+
+function localNum(n) {
+  return LANG === 'ar' ? arabicNum(n) : String(n);
+}
+
+function factOf(monthN) {
+  const facts = (I18N[LANG] && I18N[LANG].facts) || I18N.ar.facts;
+  return facts[monthN - 1];
+}
+
+function questionTextAt(idx) {
+  const qs = (I18N[LANG] && I18N[LANG].questions) || I18N.ar.questions;
+  return qs[idx];
+}
+
+function remainingPhraseLocal(game, n) {
+  if (LANG === 'ar') {
+    const units = {
+      letter: ['شَهْر', 'شَهْرَيْن', 'أَشْهُر'],
+      trivia: ['سُؤال', 'سُؤالان', 'أَسْئِلَة'],
+      order:  ['تَرْتيبَة', 'تَرْتيبَتان', 'تَرْتيبات']
+    }[game];
+    if (n === 1) return `بَقِيَ ${units[0]} واحِد`;
+    if (n === 2) return `بَقِيَ ${units[1]}`;
+    if (n >= 3 && n <= 10) return `بَقِيَتْ ${arabicNum(n)} ${units[2]}`;
+    return `بَقِيَ ${arabicNum(n)} ${units[0]}`;
+  }
+  const units = {
+    en: { letter: ['month','months'],  trivia: ['question','questions'], order: ['round','rounds']  },
+    sv: { letter: ['månad','månader'], trivia: ['fråga','frågor'],       order: ['runda','rundor']  },
+    fr: { letter: ['mois','mois'],     trivia: ['question','questions'], order: ['manche','manches']},
+    es: { letter: ['mes','meses'],     trivia: ['pregunta','preguntas'], order: ['ronda','rondas']  },
+    it: { letter: ['mese','mesi'],     trivia: ['domanda','domande'],    order: ['turno','turni']   },
+    de: { letter: ['Monat','Monate'],  trivia: ['Frage','Fragen'],       order: ['Runde','Runden']  }
+  }[LANG][game];
+  const w = n === 1 ? units[0] : units[1];
+  const tmpl = {
+    en: `${n} ${w} left`,
+    sv: `${n} ${w} kvar`,
+    fr: `${n} ${w} restant${n > 1 ? 's' : ''}`,
+    es: `Quedan ${n} ${w}`,
+    it: `${n} ${w} rimasti`,
+    de: `Noch ${n} ${w}`
+  }[LANG];
+  return tmpl;
+}
 
 /* ═══════════════════════════════════════════════════════
    STATE
    ═══════════════════════════════════════════════════════ */
 const TOTALS = { letter: 12, trivia: QUESTIONS.length, order: 12 };
-const GAME_LABELS = {
-  letter: 'رَكِّبِ الشَّهْر',
-  trivia: 'خَمِّنِ الشَّهْر',
-  order:  'رَتِّبِ الأَشْهُر'
-};
-const REMAINING_UNIT = {
-  letter: ['شَهْر', 'شَهْرَيْن', 'أَشْهُر'],
-  trivia: ['سُؤال', 'سُؤالان', 'أَسْئِلَة'],
-  order:  ['تَرْتيبَة', 'تَرْتيبَتان', 'تَرْتيبات']
-};
+const GAME_LABEL_KEY = { letter: 'btnLetters', trivia: 'btnTrivia', order: 'btnOrder' };
+function gameLabel(g) { return t(GAME_LABEL_KEY[g]); }
 
 function loadDoneSet(key) {
   try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); }
@@ -1099,8 +1699,9 @@ const shuffle = arr => {
 function setStars(v) {
   state.stars = Math.max(0, v);
   localStorage.setItem('hijri.stars', String(state.stars));
-  $('#starCount').textContent = state.stars;
-  $$('.star-count-mirror').forEach(el => el.textContent = state.stars);
+  const display = localNum(state.stars);
+  $('#starCount').textContent = display;
+  $$('.star-count-mirror').forEach(el => el.textContent = display);
 }
 function bumpStars(by = 1) {
   setStars(state.stars + by);
@@ -1111,6 +1712,8 @@ function bumpStars(by = 1) {
 
 function go(name) {
   $$('.screen').forEach(s => s.classList.toggle('active', s.id === name));
+  const lang = $('#langSelect');
+  if (lang) lang.style.display = (name === 'home') ? '' : 'none';
   if (name === 'letters') startLetter();
   if (name === 'trivia') startTrivia();
   if (name === 'order') startOrder();
@@ -1225,8 +1828,8 @@ function loadLetter(forceMonth) {
   state.letter.month = month;
   state.letter.picks = [];
 
-  $('#letterTag').textContent = `الشهر ${arabicNum(month.n)}`;
-  $('#letterFact').textContent = month.fact;
+  $('#letterTag').textContent = t('monthN', localNum(month.n));
+  $('#letterFact').textContent = factOf(month.n);
   $('#letterFb').textContent = '';
   $('#letterFb').className = 'feedback';
 
@@ -1254,13 +1857,13 @@ function loadLetter(forceMonth) {
 
   const bench = $('#bench'); bench.innerHTML = '';
   pool.forEach((p, i) => {
-    const t = document.createElement('button');
-    t.className = 'tile';
-    t.textContent = p.ch;
-    t.dataset.id = p.id;
-    t.style.animationDelay = (i * 50) + 'ms';
-    t.addEventListener('click', () => placeLetter(t, p));
-    bench.appendChild(t);
+    const tile = document.createElement('button');
+    tile.className = 'tile';
+    tile.textContent = p.ch;
+    tile.dataset.id = p.id;
+    tile.style.animationDelay = (i * 50) + 'ms';
+    tile.addEventListener('click', () => placeLetter(tile, p));
+    bench.appendChild(tile);
   });
 }
 
@@ -1301,16 +1904,16 @@ function checkLetter() {
       markDone('letter', state.letter.month.n);
       bumpStars(1);
     }
-    $('#letterFb').textContent = wasNew ? 'أَحْسَنْت! ✨' : 'رائِع! 🌙';
+    $('#letterFb').textContent = wasNew ? t('fbWellDone') : t('fbGreat');
     $('#letterFb').className = 'feedback correct';
     sfxRight();
     burst(innerWidth/2, innerHeight/2 - 40, 70);
     setTimeout(() => {
       if (isComplete('letter')) showAllDone('letter');
-      else showWin(state.letter.month, 'أَحْسَنْت! 🎉');
+      else showWin(state.letter.month, t('winTitle'));
     }, 700);
   } else {
-    $('#letterFb').textContent = 'حاولْ مرَّةً أُخرى';
+    $('#letterFb').textContent = t('fbTryAgain');
     $('#letterFb').className = 'feedback wrong';
     sfxWrong();
     // After a beat, return any wrong letters to the bench
@@ -1349,7 +1952,7 @@ function loadTrivia(forceQi) {
   state.trivia.questionIdx = qi;
   state.trivia.question = q;
 
-  $('#triviaQ').textContent = q.q;
+  $('#triviaQ').textContent = questionTextAt(qi);
   $('#triviaFb').textContent = '';
   $('#triviaFb').className = 'feedback';
 
@@ -1386,18 +1989,18 @@ function answerTrivia(btn, picked) {
       markDone('trivia', state.trivia.questionIdx);
       bumpStars(1);
     }
-    $('#triviaFb').textContent = wasNew ? 'إِجَابَةٌ صَحِيحَة! ⭐' : 'صَحيح! 🌙';
+    $('#triviaFb').textContent = wasNew ? t('fbCorrect') : t('fbCorrectShort');
     $('#triviaFb').className = 'feedback correct';
     sfxRight();
     burst(innerWidth/2, innerHeight/2 - 60, 65);
     setTimeout(() => {
       if (isComplete('trivia')) showAllDone('trivia');
-      else showWin(monthByN(q.a), 'أَحْسَنْت! 🎉');
+      else showWin(monthByN(q.a), t('winTitle'));
     }, 700);
   } else {
     btn.classList.add('wrong');
     sfxWrong();
-    $('#triviaFb').textContent = 'الإجابةُ الصَّحيحة: ' + monthByN(q.a).name;
+    $('#triviaFb').textContent = t('correctAnsPrefix') + monthByN(q.a).name;
     $('#triviaFb').className = 'feedback wrong';
     // highlight the right answer
     all.forEach(b => {
@@ -1425,7 +2028,7 @@ function paintSeqCard(el, month) {
   el.style.setProperty('--c1', month.c1);
   el.style.setProperty('--c2', month.c2);
   el.style.setProperty('--cs', month.cs);
-  el.innerHTML = `<span class="seq-num">${arabicNum(month.n)}</span><div>${month.name}</div>`;
+  el.innerHTML = `<span class="seq-num">${localNum(month.n)}</span><div>${month.name}</div>`;
 }
 
 function loadOrder(forceI) {
@@ -1458,15 +2061,15 @@ function loadOrder(forceI) {
   const bench = $('#orderBench');
   bench.innerHTML = '';
   candidates.forEach((m, idx) => {
-    const t = document.createElement('div');
-    t.className = 'draggable';
-    t.style.setProperty('--c1', m.c1);
-    t.style.setProperty('--c2', m.c2);
-    t.style.setProperty('--cs', m.cs);
-    t.innerHTML = `<div>${m.name}</div>`;
-    t.style.animationDelay = (idx * 70) + 'ms';
-    attachDrag(t, m);
-    bench.appendChild(t);
+    const tile = document.createElement('div');
+    tile.className = 'draggable';
+    tile.style.setProperty('--c1', m.c1);
+    tile.style.setProperty('--c2', m.c2);
+    tile.style.setProperty('--cs', m.cs);
+    tile.innerHTML = `<div>${m.name}</div>`;
+    tile.style.animationDelay = (idx * 70) + 'ms';
+    attachDrag(tile, m);
+    bench.appendChild(tile);
   });
 
   $('#orderFb').textContent = '';
@@ -1552,20 +2155,20 @@ function attemptPlacement(tile, month, originRect) {
       markDone('order', state.order.startIdx);
       bumpStars(1);
     }
-    $('#orderFb').textContent = wasNew ? 'أَحْسَنْت! ✨' : 'رائِع! 🌙';
+    $('#orderFb').textContent = wasNew ? t('fbWellDone') : t('fbGreat');
     $('#orderFb').className = 'feedback correct';
     sfxRight();
     burst(innerWidth/2, innerHeight/2 - 40, 70);
     setTimeout(() => {
       if (isComplete('order')) showAllDone('order');
-      else showWin(month, 'أَحْسَنْت! 🎉');
+      else showWin(month, t('winTitle'));
     }, 700);
   } else {
     // Wrong — restore tile and shake it
     tile.style.visibility = '';
     tile.classList.add('bouncing');
     setTimeout(() => tile.classList.remove('bouncing'), 500);
-    $('#orderFb').textContent = 'حاولْ مَرَّةً أُخرى';
+    $('#orderFb').textContent = t('fbTryAgain');
     $('#orderFb').className = 'feedback wrong';
     sfxWrong();
   }
@@ -1583,20 +2186,19 @@ function showWin(month, title) {
   state.pendingCompletion = null;
   $('#winTitle').textContent = title;
   $('#winMonth').textContent = month.name;
-  $('#winFact').textContent = month.fact;
-  $('#winNext').textContent = 'تَابِع ←';
+  $('#winFact').textContent = factOf(month.n);
+  $('#winNext').textContent = t('winContinue');
   $('#winSecondary').style.display = 'none';
   $('#winBanner').classList.add('active');
 }
 function showAllDone(game) {
   state.pendingCompletion = game;
-  $('#winTitle').textContent = 'مَبْروك! 🏆';
+  $('#winTitle').textContent = t('winAllTitle');
   $('#winMonth').textContent = '🌙✨🌟';
   const total = TOTALS[game];
-  const label = GAME_LABELS[game];
-  $('#winFact').textContent =
-    `لَقَدْ أَتْمَمْتَ كُلَّ الجَوْلاتِ الـ${arabicNum(total)} في لُعبة "${label}"! هَلْ تُريدُ أَنْ تَلْعَبَ مَرَّةً أُخرى؟`;
-  $('#winNext').textContent = 'العَب مَرَّةً أُخرى ↺';
+  const label = gameLabel(game);
+  $('#winFact').textContent = t('winAllText', localNum(total), label);
+  $('#winNext').textContent = t('winAllPlayAgain');
   $('#winSecondary').style.display = '';
   $('#winBanner').classList.add('active');
   burst(innerWidth/2, innerHeight/2 - 60, 120);
@@ -1607,13 +2209,6 @@ function hideWin() { $('#winBanner').classList.remove('active'); }
 /* ═══════════════════════════════════════════════════════
    PROGRESS MODAL
    ═══════════════════════════════════════════════════════ */
-function remainingPhrase(game, n) {
-  const units = REMAINING_UNIT[game];
-  if (n === 1) return `بَقِيَ ${units[0]} واحِد`;
-  if (n === 2) return `بَقِيَ ${units[1]}`;
-  if (n >= 3 && n <= 10) return `بَقِيَتْ ${arabicNum(n)} ${units[2]}`;
-  return `بَقِيَ ${arabicNum(n)} ${units[0]}`;
-}
 function openProgress() {
   const list = $('#progressList');
   list.innerHTML = '';
@@ -1627,18 +2222,16 @@ function openProgress() {
     row.className = 'progress-row' + (isDone ? ' done' : '');
     row.innerHTML = `
       <div class="pr-top">
-        <span>${GAME_LABELS[g]}</span>
-        <span class="pr-count">${arabicNum(done)} / ${arabicNum(total)}</span>
+        <span>${gameLabel(g)}</span>
+        <span class="pr-count">${localNum(done)} / ${localNum(total)}</span>
       </div>
       <div class="pr-bar"><div class="pr-fill" style="width:${pct}%"></div></div>
-      <div class="pr-remaining">${isDone ? 'أَتْمَمْتَ هذِهِ اللُّعبَة! 🌟' : remainingPhrase(g, remaining)}</div>
+      <div class="pr-remaining">${isDone ? t('progGameDone') : remainingPhraseLocal(g, remaining)}</div>
     `;
     list.appendChild(row);
   });
   const allDone = ['letter','trivia','order'].every(g => isComplete(g));
-  $('#progressIntro').textContent = allDone
-    ? 'مَبْروك! تَعَلَّمْتَ كُلَّ شَيءٍ في كُلِّ الأَلْعاب! 🏆'
-    : 'إِليكَ ما تَعَلَّمْتَهُ حتَّى الآن';
+  $('#progressIntro').textContent = allDone ? t('progAllDone') : t('progIntro');
   $('#progressModal').classList.add('active');
 }
 function closeProgress() { $('#progressModal').classList.remove('active'); }
@@ -1691,7 +2284,72 @@ $('#winSecondary').addEventListener('click', () => {
   go('home');
 });
 
-setStars(state.stars);
+/* ═══════════════════════════════════════════════════════
+   LANGUAGE APPLICATION
+   ═══════════════════════════════════════════════════════ */
+function applyTranslations() {
+  $$('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(key);
+  });
+  $$('[data-i18n-aria]').forEach(el => {
+    const key = el.getAttribute('data-i18n-aria');
+    el.setAttribute('aria-label', t(key));
+  });
+}
+
+function rerenderActiveScreen() {
+  // Refresh dynamic strings on whichever screen is currently visible.
+  if ($('#letters').classList.contains('active') && state.letter.month) {
+    const m = state.letter.month;
+    $('#letterTag').textContent = t('monthN', localNum(m.n));
+    $('#letterFact').textContent = factOf(m.n);
+  }
+  if ($('#trivia').classList.contains('active') && state.trivia.question) {
+    $('#triviaQ').textContent = questionTextAt(state.trivia.questionIdx);
+  }
+  if ($('#order').classList.contains('active') && state.order.startIdx !== null) {
+    const i = state.order.startIdx;
+    paintSeqCard($('#seqFirst'), MONTHS[i % 12]);
+    paintSeqCard($('#seqLast'),  MONTHS[(i + 2) % 12]);
+    const slot = $('#seqSlot');
+    if (slot.classList.contains('filled')) {
+      paintSeqCard(slot, MONTHS[(i + 1) % 12]);
+      slot.classList.add('filled');
+    }
+  }
+  if ($('#winBanner').classList.contains('active')) {
+    if (state.pendingCompletion) {
+      // Re-render the all-done banner in the new language
+      showAllDone(state.pendingCompletion);
+    }
+  }
+  if ($('#progressModal').classList.contains('active')) openProgress();
+}
+
+function setLang(lang) {
+  if (!I18N[lang]) lang = 'ar';
+  LANG = lang;
+  try { localStorage.setItem('hijri.lang', lang); } catch (e) {}
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.body.style.fontFamily = (lang === 'ar')
+    ? "'Cairo', system-ui, sans-serif"
+    : "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+  applyTranslations();
+  document.title = t('title');
+  // Refresh star displays (numerals depend on language)
+  setStars(state.stars);
+  rerenderActiveScreen();
+}
+
+LANG = detectLang();
+$('#langSelect').value = LANG;
+$('#langSelect').addEventListener('change', (e) => {
+  sfxTap();
+  setLang(e.target.value);
+});
+setLang(LANG);
 
 /* ═══════════════════════════════════════════════════════
    PWA: register service worker

@@ -1,5 +1,5 @@
 // Service worker for "أشهرنا الهجرية" PWA
-const VERSION = 'v1.0.1';
+const VERSION = 'v1.1.0';
 const SHELL_CACHE = `hijri-shell-${VERSION}`;
 const RUNTIME_CACHE = `hijri-runtime-${VERSION}`;
 
