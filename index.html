@@ -181,7 +181,8 @@ body {
 /* keep the chevron on the same physical side regardless of writing direction */
 html[dir="rtl"] .lang-select { padding: 0 2rem 0 0.85rem; }
 /* Make sure the home topbar leaves room for the language selector on the right */
-#home .topbar { padding-right: 8.5rem; min-height: 42px; }
+#home .topbar { padding-right: 8.5rem; min-height: 42px; justify-content: flex-start; }
+html[dir="rtl"] #home .topbar { justify-content: flex-end; }
 
 .star-pill {
   display: inline-flex;
@@ -1589,7 +1590,7 @@ function t(key, ...args) {
 }
 
 function localNum(n) {
-  return LANG === 'ar' ? arabicNum(n) : String(n);
+  return String(n);
 }
 
 function factOf(monthN) {
@@ -1611,8 +1612,8 @@ function remainingPhraseLocal(game, n) {
     }[game];
     if (n === 1) return `بَقِيَ ${units[0]} واحِد`;
     if (n === 2) return `بَقِيَ ${units[1]}`;
-    if (n >= 3 && n <= 10) return `بَقِيَتْ ${arabicNum(n)} ${units[2]}`;
-    return `بَقِيَ ${arabicNum(n)} ${units[0]}`;
+    if (n >= 3 && n <= 10) return `بَقِيَتْ ${n} ${units[2]}`;
+    return `بَقِيَ ${n} ${units[0]}`;
   }
   const units = {
     en: { letter: ['month','months'],  trivia: ['question','questions'], order: ['round','rounds']  },
